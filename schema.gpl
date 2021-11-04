@@ -1,0 +1,13 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type MusicianGraphqlDto {
+  id: String!
+  name: String!
+  age: Float!
+}
+
+type Query {
+  getMusicianByName: [MusicianGraphqlDto!]!
+}
