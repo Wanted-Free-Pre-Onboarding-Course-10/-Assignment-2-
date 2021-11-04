@@ -1,34 +1,39 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Patch,
+  Post,
+  Query,
+} from '@nestjs/common';
 import { MusicianDto } from './dto/musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { Musician, MusicianService } from './musician.service';
 
 @Controller('musician')
 export class MusicianController {
-    constructor(
-        private musicianService: MusicianService
-    ){}
+  constructor(private musicianService: MusicianService) {}
 
-    @Get()
-    async getAllMusicians() : Promise<ResponseMusicianDto[]>{
-        const greeting = await this.musicianService.getAllMusicians();
-        
-        return greeting;
-    }
+  @Get()
+  async getAllMusicians(): Promise<ResponseMusicianDto[]> {
+    const greeting = await this.musicianService.getAllMusicians();
 
-    @Post()
-    async createMusician(@Body() musicianDto: MusicianDto): Promise<Musician> {
-        return await this.musicianService.createMusician(musicianDto);
-    }
+    return greeting;
+  }
 
-    @Patch()
-    async updateMusicianAge(@Body() muisicianDto: MusicianDto){
-        this.musicianService.updateMusicianAge(muisicianDto)
-    }
+  @Post()
+  async createMusician(@Body() musicianDto: MusicianDto): Promise<Musician> {
+    return await this.musicianService.createMusician(musicianDto);
+  }
 
-    @Delete()
-    async deleteMusician(@Query('name') name : string){
-        this.musicianService.deleteMusicianByName(name);
-    }
+  @Patch()
+  async updateMusicianAge(@Body() muisicianDto: MusicianDto) {
+    this.musicianService.updateMusicianAge(muisicianDto);
+  }
 
+  @Delete()
+  async deleteMusician(@Query('name') name: string) {
+    this.musicianService.deleteMusicianByName(name);
+  }
 }

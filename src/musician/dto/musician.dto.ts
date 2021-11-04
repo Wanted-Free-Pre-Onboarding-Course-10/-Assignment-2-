@@ -1,11 +1,10 @@
-import { IsNotEmpty, IsNumber } from "class-validator";
+import { IsNotEmpty, IsNumber } from 'class-validator';
 
-export class MusicianDto{
+export class MusicianDto {
+  @IsNotEmpty()
+  name: string;
 
-    @IsNotEmpty()
-    name: string;
-    
-    @IsNotEmpty()
-    @IsNumber()
-    age: number;
+  @IsNotEmpty()
+  @IsNumber()
+  age: number;
 }

@@ -11,10 +11,10 @@ import { MusicianResolver } from './musician.resolver';
       host: 'e0f0bfda.databases.neo4j.io',
       port: 7687,
       username: 'neo4j',
-      password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
-    })
+      password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU',
+    }),
   ],
   controllers: [MusicianController],
-  providers: [MusicianService, MusicianResolver]
+  providers: [MusicianService, MusicianResolver],
 })
 export class MusicianModule {}

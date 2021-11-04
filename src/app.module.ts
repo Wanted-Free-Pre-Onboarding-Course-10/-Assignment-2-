@@ -8,11 +8,11 @@ import { GraphQLModule } from '@nestjs/graphql';
 @Module({
   imports: [
     GraphQLModule.forRoot({
-      autoSchemaFile: 'schema.gpl'
+      autoSchemaFile: 'schema.gpl',
     }),
-    MusicianModule, 
-    SongModule, 
-    AlbumModule, 
+    MusicianModule,
+    SongModule,
+    AlbumModule,
     Neo4jModule,
   ],
   controllers: [],
