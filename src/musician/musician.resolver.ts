@@ -15,15 +15,15 @@ export class MusicianResolver {
 
   @Query(() => [Album])
   async getAlbumByMusician(
-    @Args("musicianId", { type: () => String }) musicianId: string
+    @Args("id", { type: () => String }) id: string
   ): Promise<Album[]> {
-    return await this.musicianQueryService.getAlbumByMusician(musicianId);
+    return await this.musicianQueryService.getAlbumByMusician(id);
   }
 
   @Query(() => [Song])
   async getSongsByMusician(
-    @Args("musicianId", { type: () => String }) musicianId: string
+    @Args("id", { type: () => String }) id: string
   ): Promise<Song[]> {
-    return await this.musicianQueryService.getSongsByMusician(musicianId);
+    return await this.musicianQueryService.getSongsByMusician(id);
   }
 }

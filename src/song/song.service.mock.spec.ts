@@ -41,7 +41,7 @@ describe("AlbumService", () => {
       const songRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            songId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -65,22 +65,22 @@ describe("AlbumService", () => {
       const albumRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            albumId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
       };
-      const songId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
 
       neo4jService.read = jest.fn().mockResolvedValueOnce({
         records: [albumRecord],
       });
 
       // when
-      const result = await songQueryService.getAlbumBySong(songId);
+      const result = await songQueryService.getAlbumBySong(id);
 
       // then
-      expect(result[0].albumId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
     });
   });
 
@@ -90,22 +90,22 @@ describe("AlbumService", () => {
       const musicianRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            musicianId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
       };
-      const songId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
 
       neo4jService.read = jest.fn().mockResolvedValueOnce({
         records: [musicianRecord],
       });
 
       // when
-      const result = await songQueryService.getAlbumBySong(songId);
+      const result = await songQueryService.getAlbumBySong(id);
 
       // then
-      expect(result[0].albumId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
     });
   });
 });

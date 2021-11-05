@@ -1,4 +1,4 @@
-import { Neo4jConfig } from "src/neo4j-config.interface";
+import { Neo4jConfig } from "../neo4j-config.interface";
 import neo4j, { Driver } from "neo4j-driver";
 
 export const createDriver = async (config: Neo4jConfig) => {

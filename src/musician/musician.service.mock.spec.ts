@@ -39,7 +39,7 @@ describe("MusicianService", () => {
       const musicianRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            musicianId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -59,11 +59,11 @@ describe("MusicianService", () => {
   describe("getAlbumByMusician", () => {
     it("뮤지션 아이디를 통한 앨범을 반환을 해야한다.", async () => {
       // given
-      const musicianId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
       const albumRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            albumId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -74,10 +74,10 @@ describe("MusicianService", () => {
       });
 
       // when
-      const result = await service.getAlbumByMusician(musicianId);
+      const result = await service.getAlbumByMusician(id);
 
       // then
-      expect(result[0].albumId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
     });
   });
 
@@ -87,7 +87,7 @@ describe("MusicianService", () => {
       const songRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            songId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -96,24 +96,24 @@ describe("MusicianService", () => {
       const anotherSongRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            songId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
       };
 
-      const musicianId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
 
       neo4jService.read = jest.fn().mockResolvedValueOnce({
         records: [songRecord, anotherSongRecord],
       });
 
       // when
-      const result = await service.getSongsByMusician(musicianId);
+      const result = await service.getSongsByMusician(id);
 
       // then
-      expect(result[0].songId).toBeTruthy();
-      expect(result[1].songId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
+      expect(result[1].id).toBeTruthy();
     });
   });
 });
