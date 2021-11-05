@@ -1,3 +1,3 @@
-export enum Genre{
+export enum Genre {
   DANCE, BALAD, HIPHOP, POP, TROT, SOUL
 }
