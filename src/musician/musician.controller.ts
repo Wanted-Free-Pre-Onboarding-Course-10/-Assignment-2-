@@ -8,15 +8,15 @@ import { MusicianService } from './musician.service';
 // @UseFilters(new HttpExceptionFil)
 export class MusicianController {
     private logger = new Logger('MusicianController')
-    
+
     constructor(
         private musicianService: MusicianService
-    ){}
+    ) { }
 
     @Get()
-    async getAllMusicians() : Promise<ResponseMusicianDto[]>{
+    async getAllMusicians(): Promise<ResponseMusicianDto[]> {
         const greeting = await this.musicianService.getAllMusicians();
-        
+
         return greeting;
     }
 
@@ -27,17 +27,17 @@ export class MusicianController {
 
     @Patch('/:id')
     async updateMusicianById(
-        @Param('id') id : string ,
+        @Param('id') id: string,
         @Body() updateMusicianDto: UpdateMusicianDto
-        ): Promise<ResponseMusicianDto>{
+    ): Promise<ResponseMusicianDto> {
         this.logger.debug(`updateMusician controller dto : ${JSON.stringify(updateMusicianDto)}`)
         return await this.musicianService.updateMusicianById(id, updateMusicianDto)
     }
 
     @Delete("/:id")
     async deleteMusician(
-        @Param('id') id : string ,
-    ) : Promise<string>{
+        @Param('id') id: string,
+    ): Promise<string> {
         return await this.musicianService.deleteMusician(id);
     }
 

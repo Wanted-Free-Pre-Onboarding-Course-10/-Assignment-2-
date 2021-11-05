@@ -7,4 +7,4 @@ import { MusicianService } from './musician.service';
   controllers: [MusicianController],
   providers: [MusicianService, MusicianResolver]
 })
-export class MusicianModule {}
+export class MusicianModule { }

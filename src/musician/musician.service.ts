@@ -14,22 +14,22 @@ export type MusicianLabel = Node
 @Injectable()
 export class MusicianService {
     private logger = new Logger('MusicianService')
-    constructor(private readonly neo4jService : Neo4jService) {}
+    constructor(private readonly neo4jService: Neo4jService) { }
 
     //== read all musiccian  == //
-    async getAllMusicians() : Promise<ResponseMusicianDto[]>{
+    async getAllMusicians(): Promise<ResponseMusicianDto[]> {
         const result = await this.neo4jService.read(
             `MATCH (n : Musician) 
              RETURN n
-            `, 
+            `,
             {}
         )
 
         this.logger.debug(result)
 
-        const responseDto : ResponseMusicianDto[] = result.records.map(value => {
+        const responseDto: ResponseMusicianDto[] = result.records.map(value => {
 
-            const res : ResponseMusicianDto = ResponseMusicianDto.createResponseMusicianDto(value.get('n').properties)
+            const res: ResponseMusicianDto = ResponseMusicianDto.createResponseMusicianDto(value.get('n').properties)
             return res;
         })
 
@@ -39,7 +39,7 @@ export class MusicianService {
     }
 
     // == create musician == //
-    async createMusician(createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto>{
+    async createMusician(createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto> {
         const { name, age, gender } = createMusicianDto;
 
         // musician 객체 생성
@@ -75,24 +75,23 @@ export class MusicianService {
     }
 
     // == update musician == //
-    async updateMusicianById(id: string, updateMusicianDto: UpdateMusicianDto) : Promise<ResponseMusicianDto>{
+    async updateMusicianById(id: string, updateMusicianDto: UpdateMusicianDto): Promise<ResponseMusicianDto> {
         const { name, age } = updateMusicianDto;
 
         let updatedMusician;
 
         // 이름 업데이트
-        if(name){
+        if (name) {
             updatedMusician = await this.updateName(id, name);
         }
 
         // 나이 업데이트
-        if(age){
+        if (age) {
             updatedMusician = await this.updateAge(id, age);
         }
-
         // == updatedMusician to dto == //
         const repsonseDto = ResponseMusicianDto.createResponseMusicianDto(updatedMusician.properties);
-        
+
         this.logger.debug(`updatedMusician : ${repsonseDto}`)
 
         return repsonseDto;
@@ -106,18 +105,18 @@ export class MusicianService {
              DELETE n
              RETURN n
             `,
-            {
-                id : id
-            }
-        );
+                {
+                    id: id
+                }
+            );
 
         this.checkExistenceOfMusician(id, result.records);
-        
+
         return DELETE_SUCCESS_MSG;
     }
 
     // == clear DB == //
-    async clear(){
+    async clear() {
         await this.neo4jService.write(
             `
              MATCH (n : Musician)
@@ -128,25 +127,25 @@ export class MusicianService {
     }
 
     // == 해당 아이디의 뮤지션이 없으면 예외처리하는 메서드 == //
-    private checkExistenceOfMusician(id: string, records: Array<any>){
-        if(records.length == 0)
+    private checkExistenceOfMusician(id: string, records: Array<any>) {
+        if (records.length == 0)
             throw new MusicianNotFoundException(id);
     }
 
     // == 뮤지션 이름 업데이트 == //
-    private async updateName(id: string, name: string){
+    private async updateName(id: string, name: string) {
         const result = await this.neo4jService.write(
             `MATCH (n : Musician {id: $id}) 
              SET n.name = $name, n.updatedAt = $updatedAt
              RETURN n
-            `, 
+            `,
             {
                 id: id,
                 name: name,
                 updatedAt: (new Date()).toString()
             }
         )
-        
+
         // == 해당아이디의 뮤지션이 있는지 확인 하는 메서드 == //
         this.checkExistenceOfMusician(id, result.records);
 
@@ -156,12 +155,12 @@ export class MusicianService {
     }
 
     // == 뮤지션 나이 업데이트 == //
-    private async updateAge(id: string, age: number){
+    private async updateAge(id: string, age: number) {
         const result = await this.neo4jService.write(
             `MATCH (n : Musician {id: $id}) 
              SET n.age = $age, n.updatedAt = $updatedAt
              RETURN n
-            `, 
+            `,
             {
                 id: id,
                 age: age,

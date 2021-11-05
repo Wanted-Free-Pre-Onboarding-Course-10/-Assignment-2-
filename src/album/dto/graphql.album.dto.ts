@@ -1,7 +1,8 @@
 import { ArgsType, Field, ObjectType } from "@nestjs/graphql";
+import { Genre } from "../genre.enum";
 
 @ObjectType()
-export class MusicianGraphqlDto {
+export class AlbumGraphqlDto {
     @Field()
     id: string;
 
@@ -9,6 +10,9 @@ export class MusicianGraphqlDto {
     name: string;
 
     @Field()
-    age: number;
+    releaseDate: number;
+
+    @Field()
+    genre: Genre;
 
 }

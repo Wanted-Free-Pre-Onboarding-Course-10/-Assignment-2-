@@ -19,12 +19,12 @@ import { Neo4jService } from './neo4j/neo4j.service';
     GraphQLModule.forRoot({
       autoSchemaFile: 'schema.gpl'
     }),
-    MusicianModule, 
-    SongModule, 
-    AlbumModule, 
+    MusicianModule,
+    SongModule,
+    AlbumModule,
     Neo4jModule,
   ],
   controllers: [],
   providers: [],
 })
-export class AppModule {}
+export class AppModule { }
