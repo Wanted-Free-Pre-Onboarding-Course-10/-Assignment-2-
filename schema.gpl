@@ -2,13 +2,13 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type Album {
-  albumId: String!
+type Musician {
+  musicianId: String!
   name: String!
 }
 
-type Musician {
-  musicianId: String!
+type Album {
+  albumId: String!
   name: String!
 }
 
@@ -18,7 +18,10 @@ type Song {
 }
 
 type Query {
-  getAllAlbum: [Album!]!
-  getMusicianByAlbum(albumId: String!): [Musician!]!
-  getSongByAlbum(albumId: String!): [Song!]!
+  getAllMusician: [Musician!]!
+  getAlbumByMusician(musicianId: String!): [Album!]!
+  getSongsByMusician(musicianId: String!): [Song!]!
+  getAllSong: [Song!]!
+  getAlbumBySong(songId: String!): [Album!]!
+  getMusicianBySong(songId: String!): [Musician!]!
 }
