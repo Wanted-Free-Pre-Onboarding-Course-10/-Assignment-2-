@@ -2,12 +2,26 @@
 # THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
 # ------------------------------------------------------
 
-type MusicianGraphqlDto {
-  id: String!
+type Musician {
+  musicianId: String!
   name: String!
-  age: Float!
+}
+
+type Album {
+  albumId: String!
+  name: String!
+}
+
+type Song {
+  songId: String!
+  title: String!
 }
 
 type Query {
-  getMusicianByName: [MusicianGraphqlDto!]!
+  getAllMusician: [Musician!]!
+  getAlbumByMusician(musicianId: String!): [Album!]!
+  getSongsByMusician(musicianId: String!): [Song!]!
+  getAllSong: [Song!]!
+  getAlbumBySong(songId: String!): [Album!]!
+  getMusicianBySong(songId: String!): [Musician!]!
 }

@@ -1,10 +1,17 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { response } from "express";
 import { Node } from "neo4j-driver";
-
-import { MusicianNotFoundException } from "src/exception/musician_not_found_exception";
-import { DELETE_SUCCESS_MSG } from "src/message/messgae";
-import { Neo4jService } from "src/neo4j/neo4j.service";
+import { ConnectionException } from "../exception/cannot_connect_exception";
+import { DisconnectException } from "../exception/cannot_disconnect_exception";
+import { ConnectionFailException } from "../exception/connect_fail_exception";
+import { ConnectionDto } from "../song/dto/connection.dto";
+import { MusicianNotFoundException } from "../exception/musician_not_found_exception";
+import {
+  CONNECTION_SUCCESS_MSG,
+  DELETE_SUCCESS_MSG,
+  DISCONNECDTION_SUCCESS_MSG,
+} from "../message/messgae";
+import { Neo4jService } from "../neo4j/neo4j.service";
 import { CreateMusicianDto } from "./dto/create.musician.dto";
 import { ResponseMusicianDto } from "./dto/res.musician.dto";
 import { UpdateMusicianDto } from "./dto/update.musician.dto";
@@ -17,6 +24,7 @@ export class MusicianService {
   private logger = new Logger("MusicianService");
   constructor(private readonly neo4jService: Neo4jService) {}
 
+  //== read all musiccian  == //
   async getAllMusicians(): Promise<ResponseMusicianDto[]> {
     const result = await this.neo4jService.read(
       `MATCH (n : Musician) 
@@ -40,6 +48,7 @@ export class MusicianService {
     return responseDto;
   }
 
+  // == create musician == //
   async createMusician(
     createMusicianDto: CreateMusicianDto
   ): Promise<ResponseMusicianDto> {
@@ -97,7 +106,6 @@ export class MusicianService {
     if (age) {
       updatedMusician = await this.updateAge(id, age);
     }
-
     // == updatedMusician to dto == //
     const repsonseDto = ResponseMusicianDto.createResponseMusicianDto(
       updatedMusician.properties
@@ -111,7 +119,7 @@ export class MusicianService {
   // == delete musician == //
   async deleteMusician(id: string): Promise<string> {
     const result = await this.neo4jService.write(
-      `MATCH (n {id : $id})
+      `MATCH (n : Musician {id : $id})
              DELETE n
              RETURN n
             `,
@@ -125,11 +133,115 @@ export class MusicianService {
     return DELETE_SUCCESS_MSG;
   }
 
+  // == connect == //
+  async connect(
+    connectionDto: ConnectionDto,
+    endLabel: string,
+    relationName: string
+  ): Promise<string> {
+    if (
+      !(await this.isExistedNod(connectionDto.start)) ||
+      !(await this.isExistedNod(connectionDto.end))
+    )
+      throw new ConnectionFailException();
+
+    if (await this.isFollowing(connectionDto, endLabel, relationName)) {
+      //관계가 있으면 (관계가 있는데 또 관계 추가하려하면)
+      console.log("이미 관계 있다");
+      throw new ConnectionException();
+    }
+
+    await this.neo4jService.write(
+      `
+        match (a: Musician), (b: ${endLabel})
+        where a.id = $start AND b.id = $end
+        create (a)-[r:${relationName}]->(b)
+        return type(r)
+        `,
+      {
+        start: connectionDto.start,
+        end: connectionDto.end,
+      }
+    );
+
+    return CONNECTION_SUCCESS_MSG;
+  }
+
+  // == disconnect ==//
+  async disconnect(
+    connectionDto: ConnectionDto,
+    endLabel: string,
+    relationName: string
+  ): Promise<string> {
+    if (
+      !(await this.isExistedNod(connectionDto.start)) ||
+      !(await this.isExistedNod(connectionDto.end))
+    )
+      throw new ConnectionFailException();
+
+    if (!(await this.isFollowing(connectionDto, endLabel, relationName))) {
+      //관계가 없으면 (관계가 없는데 삭제하려 하면)
+      console.log("관계 없는데 뭘삭제해");
+      throw new DisconnectException();
+    }
+
+    await this.neo4jService.write(
+      `
+        match (n :Musician{id: $start})-[r:${relationName}]->()
+        delete r
+        `,
+      {
+        start: connectionDto.start,
+      }
+    );
+
+    return DISCONNECDTION_SUCCESS_MSG;
+  }
+
+  // == 해당 아이디의 노드가 있는지 확인하는 메서드 == //
+  async isExistedNod(id: string) {
+    return await this.neo4jService
+      .read(
+        `match (n {id: $id})
+        return count(*) AS count
+        `,
+        {
+          id: id,
+        }
+      )
+      .then((res) => {
+        return res.records[0].get("count") > 0;
+      });
+  }
+
+  // == 관계 있는 지 확인하는 메서드 == //
+  async isFollowing(
+    connectionDto: ConnectionDto,
+    endLabel: string,
+    relationName: string
+  ): Promise<boolean> {
+    return await this.neo4jService
+      .read(
+        `
+        MATCH (target:${endLabel} {id: $end})<-[:${relationName}]-(current:Musician {id: $start})
+        RETURN count(*) AS count
+    `,
+        {
+          start: connectionDto.start,
+          end: connectionDto.end,
+        }
+      )
+      .then((res) => {
+        console.log(res.records[0].get("count"));
+        return res.records[0].get("count") > 0;
+      });
+  }
+
   // == clear DB == //
   async clear() {
     await this.neo4jService.write(
       `
-             MATCH (n)
+             MATCH (n : Musician)
              DETACH DELETE n
             `,
       {}
@@ -144,7 +256,7 @@ export class MusicianService {
   // == 뮤지션 이름 업데이트 == //
   private async updateName(id: string, name: string) {
     const result = await this.neo4jService.write(
-      `MATCH (n {id: $id}) 
+      `MATCH (n : Musician {id: $id}) 
              SET n.name = $name, n.updatedAt = $updatedAt
              RETURN n
             `,
@@ -166,7 +278,7 @@ export class MusicianService {
   // == 뮤지션 나이 업데이트 == //
   private async updateAge(id: string, age: number) {
     const result = await this.neo4jService.write(
-      `MATCH (n {id: $id}) 
+      `MATCH (n : Musician {id: $id}) 
              SET n.age = $age, n.updatedAt = $updatedAt
              RETURN n
             `,

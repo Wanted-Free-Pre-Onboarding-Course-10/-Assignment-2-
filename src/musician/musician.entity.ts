@@ -1,6 +1,6 @@
 import { Gender } from "./gender.enum";
 
-export class Musician{
+export class Musician {
     name: string;
     age: number;
     gender: Gender;
@@ -8,7 +8,7 @@ export class Musician{
     updatedAt: Date;
 
     // == Musician 생성 메서드 == //
-    public static createMusician(name: string, age: number, gender: Gender){
+    public static createMusician(name: string, age: number, gender: Gender) {
         const musician: Musician = new Musician();
 
         musician.name = name;

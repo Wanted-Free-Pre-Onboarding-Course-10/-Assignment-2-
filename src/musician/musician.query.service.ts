@@ -1,60 +1,66 @@
-import { Injectable, Logger } from "@nestjs/common";
-import { Node } from "neo4j-driver-core";
+import { Injectable } from "@nestjs/common";
 import { Neo4jService } from "../neo4j/neo4j.service";
-import { MusicianGraphqlDto } from "./dto/graphql.musician.dto";
-import { MusicianDto } from "./dto/musician.dto";
-import { ResponseMusicianDto } from "./dto/res.musician.dto";
-
-export type Musician = Node;
+import { Musician } from "./graph.musician.entity";
+import { MUSICIAN_TO_SONG, SONG_TO_ALBUM } from "../relation/relation";
+import { Album } from "../album/graph.album.entity";
+import { Song } from "../song/graph.song.entity";
 
 @Injectable()
 export class MusicianQueryService {
-  private logger = new Logger("MusicianService");
   constructor(private readonly neo4jService: Neo4jService) {}
 
-  async createMusician(musicianDto: MusicianDto): Promise<Musician> {
-    const { name, age } = musicianDto;
-
-    const result = await this.neo4jService.write(
-      `CREATE (n: Musician) 
-             SET n += $properties, n.id = randomUUID()
-             RETURN n
-            `,
-      {
-        properties: {
-          name,
-          age,
-        },
-      }
+  async getAllMusician() {
+    const result = await this.neo4jService.read(
+      `MATCH
+                (musician : Musician) 
+              RETURN musician`,
+      {}
     );
 
-    return result.records[0].get("n");
+    return result.records.map((album) => {
+      const id = album.get("musician").properties.id;
+      const name = album.get("musician").properties.name;
+      const res: Musician = {
+        id,
+        name,
+      };
+      return res;
+    });
   }
 
-  async updateMusicianAge(musicianDto: MusicianDto) {
-    const result = await this.neo4jService.write(
-      `MATCH (n {name : $name})
-             SET n.age = $age
-             RETURN n
-            `,
-      {
-        name: musicianDto.name,
-        age: musicianDto.age,
-      }
+  async getAlbumByMusician(id: string) {
+    const result = await this.neo4jService.read(
+      `MATCH
+                (musician:Musician {id: "${id}"})-[:${MUSICIAN_TO_SONG}]-(song),
+                (song)-[:${SONG_TO_ALBUM}]-(album)
+              RETURN album`,
+      {}
     );
+
+    return result.records.map((album) => {
+      const res: Album = {
+        id: album.get("album").properties.id,
+        name: album.get("album").properties.name,
+      };
+      return res;
+    });
   }
 
-  async deleteMusicianByName(name: string) {
-    const result = await this.neo4jService.write(
-      `MATCH (n {name : $name})
-             DELETE n
-             RETURN n
+  async getSongsByMusician(id: string) {
+    const result = await this.neo4jService.read(
+      `MATCH
+                (musician:Musician {id: "${id}"})-[:${MUSICIAN_TO_SONG}]-(song)
+             RETURN song
             `,
-      {
-        name: name,
-      }
+      {}
     );
 
-    this.logger.debug(`deleted node : ${result}`);
+    return result.records.map((song) => {
+      const res: Song = {
+        id: song.get("song").properties.id,
+        name: song.get("song").properties.name,
+      };
+      return res;
+    });
   }
 }

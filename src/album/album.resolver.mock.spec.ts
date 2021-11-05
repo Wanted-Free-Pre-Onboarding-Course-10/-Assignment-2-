@@ -1,15 +1,15 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { AlbumQueryResolver } from './album.query.resolver';
-import { AlbumQueryService } from './album.query.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { AlbumResolver } from "./album.resolver";
+import { AlbumQueryService } from "./album.query.service";
 
 const mockService = {};
-describe('AlbumResolver', () => {
-  let resolver: AlbumQueryResolver;
+describe("AlbumResolver", () => {
+  let resolver: AlbumResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AlbumQueryResolver,
+        AlbumResolver,
         {
           provide: AlbumQueryService,
           useValue: mockService,
@@ -17,10 +17,10 @@ describe('AlbumResolver', () => {
       ],
     }).compile();
 
-    resolver = module.get<AlbumQueryResolver>(AlbumQueryResolver);
+    resolver = module.get<AlbumResolver>(AlbumResolver);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(resolver).toBeDefined();
   });
 });
