@@ -17,9 +17,11 @@ export class AlbumService {
     );
 
     return result.records.map((album) => {
+      const albumId = album.get('album').properties.albumId;
+      const name = album.get('album').properties.name;
       const res: Album = {
-        albumId: album.get('album').properties.albumId,
-        name: album.get('album').properties.name,
+        albumId,
+        name,
       };
       return res;
     });
