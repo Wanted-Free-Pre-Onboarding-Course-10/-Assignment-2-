@@ -138,17 +138,19 @@ export class SongService {
     )
       throw new ConnectionFailException();
 
-    const result = await this.neo4jService.read(
-      `MATCH
+    if (endLabel === "Album") {
+      const result = await this.neo4jService.read(
+        `MATCH
                 (song:Song {id: "${connectionDto.start}"})-[:${SONG_TO_ALBUM}]-(album)
              RETURN album
             `,
-      {}
-    );
-    console.log(result.records);
+        {}
+      );
+      console.log(result.records[0].get("album"));
 
-    if (result.records.length > 0)
-      throw new BadRequestException("한 곡은 앨범 1개만 들어갈 수 있습니다.");
+      if (result.records.length > 0)
+        throw new BadRequestException("한 곡은 앨범 1개만 들어갈 수 있습니다.");
+    }
 
     if (await this.isFollowing(connectionDto, endLabel, relationName)) {
       //관계가 있으면 (관계가 있는데 또 관계 추가하려하면)
