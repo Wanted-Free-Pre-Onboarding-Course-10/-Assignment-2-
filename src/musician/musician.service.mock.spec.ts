@@ -1,8 +1,11 @@
 import { Test, TestingModule } from "@nestjs/testing";
 import { MusicianQueryService } from "./musician.query.service";
 import { Neo4jService } from "../neo4j/neo4j.service";
+import * as faker from "faker";
 
-const mockNeo4jService = {};
+const mockNeo4jService = {
+  read: jest.fn(),
+};
 describe("MusicianService", () => {
   let service: MusicianQueryService;
   let neo4jService: Neo4jService;
@@ -19,6 +22,7 @@ describe("MusicianService", () => {
     }).compile();
 
     service = module.get<MusicianQueryService>(MusicianQueryService);
+    neo4jService = module.get<Neo4jService>(Neo4jService);
   });
 
   it("should be defined", () => {
@@ -27,5 +31,28 @@ describe("MusicianService", () => {
 
   it("should be defined", () => {
     expect(neo4jService).toBeDefined();
+  });
+
+  describe("getAllMusician", () => {
+    it("모든 뮤지션을 반환해야한다.", async () => {
+      // given
+      const musicianRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            musicianId: faker.datatype.uuid(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+      neo4jService.read = jest.fn().mockResolvedValueOnce({
+        records: [musicianRecord],
+      });
+
+      // when
+      const result = service.getAllMusician();
+
+      // then
+      await expect(result).resolves.toBeTruthy();
+    });
   });
 });
