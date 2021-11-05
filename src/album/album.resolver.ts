@@ -1,8 +1,8 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
-import { Album } from './album.entity';
+import { Album } from './graph.album.entity';
 import { AlbumService } from './album.service';
-import { Musician } from '../musician/musician.entity';
-import { Song } from '../song/song.entity';
+import { Musician } from '../musician/graph.musician.entity';
+import { Song } from '../song/graph.song.entity';
 
 @Resolver()
 export class AlbumResolver {

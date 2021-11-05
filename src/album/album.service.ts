@@ -1,8 +1,8 @@
 import { Injectable } from '@nestjs/common';
 import { Neo4jService } from '../neo4j/neo4j.service';
-import { Album } from './album.entity';
-import { Musician } from '../musician/musician.entity';
-import { Song } from '../song/song.entity';
+import { Album } from './graph.album.entity';
+import { Musician } from '../musician/graph.musician.entity';
+import { Song } from '../song/graph.song.entity';
 import { ALBUM_TO_SONG, SONG_TO_MUSICIAN } from '../relation/relation';
 
 @Injectable()
