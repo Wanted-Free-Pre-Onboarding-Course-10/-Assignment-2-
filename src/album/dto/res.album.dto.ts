@@ -18,7 +18,7 @@ export class ResponseAlbumDto {
       releaseDate,
       genre,
       createdAt: Date.parse(createdAt),
-      updatedAt: Date.parse(updatedAt)
+      updatedAt: updatedAt ? Date.parse(updatedAt) : 0
     }
 
     return responseDto
