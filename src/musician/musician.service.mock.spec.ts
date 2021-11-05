@@ -55,4 +55,29 @@ describe("MusicianService", () => {
       await expect(result).resolves.toBeTruthy();
     });
   });
+
+  describe("getAlbumByMusician", () => {
+    it("뮤지션 아이디를 통한 앨범을 반환을 해야한다.", async () => {
+      // given
+      const musicianId = faker.datatype.uuid();
+      const albumRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            albumId: faker.datatype.uuid(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+
+      neo4jService.read = jest.fn().mockResolvedValueOnce({
+        records: [albumRecord],
+      });
+
+      // when
+      const result = await service.getAlbumByMusician(musicianId);
+
+      // then
+      expect(result[0].albumId).toBeTruthy();
+    });
+  });
 });
