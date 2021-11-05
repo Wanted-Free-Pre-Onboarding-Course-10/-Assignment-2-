@@ -2,6 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import { Album } from './album.entity';
 import { Musician } from '../musician/musician.entity';
+import { Song } from '../song/song.entity';
 
 @Injectable()
 export class AlbumService {
@@ -37,6 +38,24 @@ export class AlbumService {
       const res: Musician = {
         musicianId: musician.get('musician').properties.musicianId,
         name: musician.get('musician').properties.name,
+      };
+      return res;
+    });
+  }
+
+  async getSongByAlbum(albumId: string) {
+    const result = await this.neo4jService.read(
+      `MATCH
+                (album:Album {albumId: "${albumId}"})-[:HAS]-(song)
+             RETURN song
+            `,
+      {},
+    );
+
+    return result.records.map((song) => {
+      const res: Song = {
+        songId: song.get('song').properties.songId,
+        title: song.get('song').properties.title,
       };
       return res;
     });
