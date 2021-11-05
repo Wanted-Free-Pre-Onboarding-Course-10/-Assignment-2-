@@ -57,5 +57,27 @@ describe('AlbumService', () => {
       // then
       await expect(result).resolves.toBeTruthy();
     });
+
+    it('잘못된 프로퍼티를 요청할 경우 Unknown 오류를 낸다.', async () => {
+      // given
+      const wrongAlbumRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            musicianId: faker.datatype.number(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+
+      neo4jService.read = jest.fn().mockResolvedValueOnce({
+        records: [wrongAlbumRecord],
+      });
+
+      // when
+      const result = await service.getAllAlbum();
+
+      // then
+      expect(result[0].albumId).toBeUndefined();
+    });
   });
 });
