@@ -72,7 +72,7 @@
 | 뮤지션 - 곡 연결/연결 해제 API | OK | 
 | 뮤지션 - 곡 연결/연결 해제 API | OK| 
 | 뮤지션 - 앨범 Read API(뮤지션 - 곡, 곡 - 앨범 활용) | OK |
-| 뮤지션, 곡, 앨범 관계 구현 |  |
+| 뮤지션, 곡, 앨범 관계 구현 | OK |
 
 ## API
 [API문서](https://documenter.getpostman.com/view/10344809/UVC2J9qV)
