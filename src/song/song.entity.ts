@@ -8,11 +8,5 @@ export class Song {
   songId!: string;
 
   @Field()
-  name: string;
-
-  @Field()
-  album: Album;
-
-  @Field()
-  musicians: Musician[];
+  title: string;
 }

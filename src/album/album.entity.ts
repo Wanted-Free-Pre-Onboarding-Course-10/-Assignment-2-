@@ -1,5 +1,4 @@
 import { Field, ObjectType } from '@nestjs/graphql';
-import { Song } from '../song/song.entity';
 
 @ObjectType()
 export class Album {
@@ -8,7 +7,4 @@ export class Album {
 
   @Field()
   name: string;
-
-  @Field()
-  songs: Song[];
 }

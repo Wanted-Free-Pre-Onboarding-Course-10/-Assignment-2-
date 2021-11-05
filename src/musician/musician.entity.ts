@@ -8,7 +8,4 @@ export class Musician {
 
   @Field()
   name: string;
-
-  @Field()
-  songs: Song[];
 }
