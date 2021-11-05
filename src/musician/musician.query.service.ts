@@ -3,6 +3,7 @@ import { Neo4jService } from "../neo4j/neo4j.service";
 import { Musician } from "./graph.musician.entity";
 import { MUSICIAN_TO_SONG, SONG_TO_ALBUM } from "../relation/relation";
 import { Album } from "../album/graph.album.entity";
+import { Song } from "../song/graph.song.entity";
 
 @Injectable()
 export class MusicianQueryService {
@@ -40,6 +41,24 @@ export class MusicianQueryService {
       const res: Album = {
         albumId: album.get("album").properties.albumId,
         name: album.get("album").properties.name,
+      };
+      return res;
+    });
+  }
+
+  async getSongsByMusician(musicianId: string) {
+    const result = await this.neo4jService.read(
+      `MATCH
+                (musician:Musician {musicianId: "${musicianId}"})-[:${MUSICIAN_TO_SONG}]-(song)
+             RETURN song
+            `,
+      {}
+    );
+
+    return result.records.map((song) => {
+      const res: Song = {
+        songId: song.get("song").properties.songId,
+        title: song.get("song").properties.title,
       };
       return res;
     });
