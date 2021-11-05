@@ -1,11 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { Neo4jService } from 'src/neo4j/neo4j.service';
+import { Neo4jService } from '../neo4j/neo4j.service';
 import { CreateAlbumDto } from './dto/create.album.dto';
 import { ResponseAlbumDto } from './dto/res.album.dto';
 import { Album } from './album.entity';
 import { UpdateAlbumDto } from './dto/update.album.dto';
-import { AlbumNotFoundException } from 'src/exception/album_not_found_exception';
-import { DELETE_SUCCESS_MSG } from 'src/message/messgae';
+import { AlbumNotFoundException } from '../exception/album_not_found_exception';
+import { DELETE_SUCCESS_MSG } from '../message/messgae';
 
 export type AlbumLabel = Node
 
@@ -72,7 +72,7 @@ export class AlbumService {
     // name이 들어왔을 경우
     if (name) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.name = $name, n.updatedAt = $updatedAt
          RETURN n
          `,
@@ -87,7 +87,7 @@ export class AlbumService {
     // releaseDate이 들어왔을 경우
     if (releaseDate) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.releaseDate = $releaseDate, n.updatedAt = $updatedAt
          RETURN n
         `,
@@ -102,7 +102,7 @@ export class AlbumService {
     // genre가 들어왔을 경우
     if (genre) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.genre = $genre, n.updatedAt = $updatedAt
          RETURN n
         `,
@@ -126,7 +126,7 @@ export class AlbumService {
   // == delete album == //
   async deleteAlbumById(id: string): Promise<string> {
     const result = await this.neo4jService.write(
-      `MATCH (n {id : $id})
+      `MATCH (n : Album {id : $id})
              DELETE n
              RETURN n
             `,
@@ -145,4 +145,15 @@ export class AlbumService {
     if (records.length == 0)
       throw new AlbumNotFoundException(id);
   }
+
+      // == clear DB == //
+      async clear() {
+        await this.neo4jService.write(
+            `
+             MATCH (n)
+             DETACH DELETE n
+            `,
+            {}
+        );
+    }
 }
