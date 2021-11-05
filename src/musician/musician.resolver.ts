@@ -10,9 +10,9 @@ export class MusicianResolver{
 
     // == graphql read == //
     @Query(() => [MusicianGraphqlDto])
-    async getMusicianByName(): Promise<MusicianGraphqlDto[]>{
-        const result = await this.musicianService.getMusiciansGraphql();
+    getMusicianByName(): void{
+        // const result = await this.musicianService.getMusiciansGraphql();
 
-        return result;
+        // return result;
     }
 }
