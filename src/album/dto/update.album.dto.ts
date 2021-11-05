@@ -1,7 +1,7 @@
 import { Genre } from "../genre.enum";
 
-export class UpdateAlbumDto{
-  
+export class UpdateAlbumDto {
+
   name?: string;
 
   releaseDate?: number;

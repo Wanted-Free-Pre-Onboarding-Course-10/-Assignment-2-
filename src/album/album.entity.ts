@@ -1,6 +1,6 @@
 import { Genre } from './genre.enum';
 
-export class Album{
+export class Album {
     name: string;
     releaseDate: number;
     genre: Genre;
@@ -8,7 +8,7 @@ export class Album{
     updatedAt: Date;
 
     // == album 생성 메서드 == //
-    public static createAlbum(name: string, releaseDate: number, genre: Genre){
+    public static createAlbum(name: string, releaseDate: number, genre: Genre) {
         const album: Album = new Album();
 
         album.name = name;

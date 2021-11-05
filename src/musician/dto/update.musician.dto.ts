@@ -1,8 +1,8 @@
 
-export class UpdateMusicianDto{
-    
-    name ?: string;
+export class UpdateMusicianDto {
 
-    age ?: number;
+    name?: string;
+
+    age?: number;
 
 }
