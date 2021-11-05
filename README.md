@@ -62,10 +62,6 @@
 ## API
 [API문서](https://documenter.getpostman.com/view/10344809/UVC2J9qV)
 
-## API 테스트
-1. 우측 링크를 클릭해서 postman으로 들어갑니다.[링크](https://www.postman.com/martian-satellite-348039/workspace/10-api/overview) 
-2. 정의된 server가 올바른지 확인 합니다.()
-3. 이후, API 테스트를 시도해 주세요.
 
 ## 팀원
 
@@ -79,6 +75,21 @@
 ## 개발 일정
 
 ![image](https://user-images.githubusercontent.com/48669085/140539886-ceeff85d-68c0-40c6-b71d-262756a5b6e2.png)
+
+## 과제 구현사항
+
+| 구현사항  | 구현 여부                                          |
+| ------ | ----------------------------------------------- |
+| 곡 페이지 Read API |  | 
+| 앨범 페이지 Read API |  | 
+| 뮤지션 페이지 Read API |  | 
+| 곡 CUD API |  | 
+| 앨범 CUD API |  | 
+| 뮤지션 CUD API |  | 
+| 뮤지션 - 곡 연결/연결 해제 API |  | 
+| 뮤지션 - 곡 연결/연결 해제 API |  | 
+| 뮤지션 - 앨범 Read API(뮤지션 - 곡, 곡 - 앨범 활용) |  |
+| 뮤지션, 곡, 앨범 관계 구현 |  |
 
 ## 사전 학습
 
