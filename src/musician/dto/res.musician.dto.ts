@@ -18,7 +18,7 @@ export class ResponseMusicianDto{
             age,
             gender,
             createdAt : Date.parse(createdAt),
-            updatedAt : Date.parse(updatedAt)
+            updatedAt : updatedAt ? Date.parse(updatedAt) : 0
         }
 
         return responseDto

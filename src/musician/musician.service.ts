@@ -1,9 +1,9 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { response } from 'express';
 import { Node } from 'neo4j-driver';
-import { MusicianNotFoundException } from 'src/exception/musician_not_found_exception';
-import { DELETE_SUCCESS_MSG } from 'src/message/messgae';
-import { Neo4jService } from 'src/neo4j/neo4j.service';
+import { MusicianNotFoundException } from '../exception/musician_not_found_exception';
+import { DELETE_SUCCESS_MSG } from '../message/messgae';
+import { Neo4jService } from '../neo4j/neo4j.service';
 import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { UpdateMusicianDto } from './dto/update.musician.dto';
@@ -16,7 +16,7 @@ export class MusicianService {
     private logger = new Logger('MusicianService')
     constructor(private readonly neo4jService : Neo4jService) {}
 
-    // == graphql X read == //
+    //== read all musiccian  == //
     async getAllMusicians() : Promise<ResponseMusicianDto[]>{
         const result = await this.neo4jService.read(
             `MATCH (n : Musician) 
@@ -37,8 +37,6 @@ export class MusicianService {
 
         return responseDto
     }
-
-    // =============================== //
 
     // == create musician == //
     async createMusician(createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto>{
@@ -115,6 +113,17 @@ export class MusicianService {
         this.checkExistenceOfMusician(id, result.records);
         
         return DELETE_SUCCESS_MSG;
+    }
+
+    // == clear DB == //
+    async clear(){
+        await this.neo4jService.write(
+            `
+             MATCH (n)
+             DETACH DELETE n
+            `,
+            {}
+        );
     }
 
     // == 해당 아이디의 뮤지션이 없으면 예외처리하는 메서드 == //
