@@ -29,11 +29,11 @@ export class MusicianController {
 
   @Patch()
   async updateMusicianAge(@Body() muisicianDto: MusicianDto) {
-    this.musicianService.updateMusicianAge(muisicianDto);
+    return this.musicianService.updateMusicianAge(muisicianDto);
   }
 
   @Delete()
   async deleteMusician(@Query('name') name: string) {
-    this.musicianService.deleteMusicianByName(name);
+    return this.musicianService.deleteMusicianByName(name);
   }
 }
