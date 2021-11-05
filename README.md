@@ -129,18 +129,15 @@ npm run start
 [바로가기](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EA%B3%A1,-%EC%95%A8%EB%B2%94,-%EB%AE%A4%EC%A7%80%EC%85%98-%EC%83%9D%EC%84%B1-API)
 
 
-**2. 뮤지션 - 곡 연결/연결해제 API**
-[바로가기]()
-
-**3.곡 - 앨범 연결/연결해제 API**
-[바로가기]()
+**2. 뮤지션 - 곡, 곡 - 앨범 연결/연결해제 API**
+[바로가기](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EB%AE%A4%EC%A7%80%EC%85%98---%EA%B3%A1,-%EA%B3%A1---%EC%95%A8%EB%B2%94-%EC%97%B0%EA%B2%B0---%EC%97%B0%EA%B2%B0%ED%95%B4%EC%A0%9C-API)
 
 
-**4. 곡 페이지**
+**3. 곡 페이지**
 [바로가기]()
 
    
-**5.뮤지션 페이지**
+**4.뮤지션 페이지**
 [바로가기]()
  
 
