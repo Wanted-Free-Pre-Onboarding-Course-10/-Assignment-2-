@@ -1,4 +1,5 @@
 import { Test, TestingModule } from "@nestjs/testing";
+import { AppModule } from "../app.module";
 import { AlbumNotFoundException } from "../exception/album_not_found_exception";
 import { Neo4jModule } from "../neo4j/neo4j.module";
 import { AlbumService } from "./album.service"
@@ -13,13 +14,7 @@ describe('AlbumSevice', () => {
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
-        Neo4jModule.forRoot({
-          scheme: 'neo4j+s',
-          host: 'e0f0bfda.databases.neo4j.io',
-          port: 7687,
-          username: 'neo4j',
-          password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
-        })
+        AppModule
       ],
       providers: [AlbumService],
     }).compile();
