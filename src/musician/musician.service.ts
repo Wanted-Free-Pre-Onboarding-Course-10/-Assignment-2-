@@ -1,6 +1,6 @@
 import { Injectable, Logger } from '@nestjs/common';
-import { Node } from 'neo4j-driver';
-import { Neo4jService } from 'src/neo4j/neo4j.service';
+import { Node } from 'neo4j-driver-core';
+import { Neo4jService } from '../neo4j/neo4j.service';
 import { MusicianGraphqlDto } from './dto/graphql.musician.dto';
 import { MusicianDto } from './dto/musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
@@ -86,8 +86,6 @@ export class MusicianService {
         age: musicianDto.age,
       },
     );
-
-    console.log(result);
   }
 
   async deleteMusicianByName(name: string) {
