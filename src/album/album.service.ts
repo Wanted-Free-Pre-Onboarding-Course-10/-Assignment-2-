@@ -1,15 +1,16 @@
 import { Injectable } from '@nestjs/common';
-import { Neo4jService } from 'src/neo4j/neo4j.service';
+import { Neo4jService } from '../neo4j/neo4j.service';
 import { CreateAlbumDto } from './dto/create.album.dto';
 import { ResponseAlbumDto } from './dto/res.album.dto';
 import { Album } from './album.entity';
 import { UpdateAlbumDto } from './dto/update.album.dto';
-import { AlbumNotFoundException } from 'src/exception/album_not_found_exception';
-import { CONNECTION_SUCCESS_MSG, DELETE_SUCCESS_MSG, DISCONNECDTION_SUCCESS_MSG } from 'src/message/messgae';
+import { CONNECTION_SUCCESS_MSG, DELETE_SUCCESS_MSG, DISCONNECDTION_SUCCESS_MSG } from '../message/messgae';
 import { ConnectionDto } from 'src/song/dto/connection.dto';
 import { ConnectionFailException } from 'src/exception/connect_fail_exception';
 import { ConnectionException } from 'src/exception/cannot_connect_exception';
 import { DisconnectException } from 'src/exception/cannot_disconnect_exception';
+
+import { AlbumNotFoundException } from '../exception/album_not_found_exception';
 
 export type AlbumLabel = Node
 
@@ -230,4 +231,16 @@ async disconnect(connectionDto: ConnectionDto, endLabel: string, relationName: s
     if (records.length == 0)
       throw new AlbumNotFoundException(id);
   }
+
+   // == clear DB == //
+   async clear() {
+    await this.neo4jService.write(
+      `
+             MATCH (n : Album)
+             DETACH DELETE n
+            `,
+      {}
+    );
+  } 
 }
+
