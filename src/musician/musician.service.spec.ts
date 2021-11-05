@@ -1,13 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
-<<<<<<< HEAD
 import { MusicianNotFoundException } from '../exception/musician_not_found_exception';
 import { Neo4jModule } from '../neo4j/neo4j.module';
 import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { UpdateMusicianDto } from './dto/update.musician.dto';
 import { Gender } from './gender.enum';
-=======
->>>>>>> c86b86f (Feat: Add album service)
 import { MusicianService } from './musician.service';
 
 describe('MusicianService', () => {
@@ -15,7 +12,6 @@ describe('MusicianService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-<<<<<<< HEAD
       // this is test neo4j db
       imports: [
         Neo4jModule.forRoot({
@@ -26,15 +22,12 @@ describe('MusicianService', () => {
           password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
         })
       ],
-=======
->>>>>>> c86b86f (Feat: Add album service)
       providers: [MusicianService],
     }).compile();
 
     service = module.get<MusicianService>(MusicianService);
   });
 
-<<<<<<< HEAD
   afterEach(async () => {
     await service.clear()
   })
@@ -44,16 +37,16 @@ describe('MusicianService', () => {
 
     it('뮤지션 생성 - 성공', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
       //when
       await service.createMusician(createMusicianDto);
-      const result : ResponseMusicianDto[] = await service.getAllMusicians();
-      const saveMusician : ResponseMusicianDto = result[0];
+      const result: ResponseMusicianDto[] = await service.getAllMusicians();
+      const saveMusician: ResponseMusicianDto = result[0];
 
       //then
       expect(saveMusician.name).toEqual('염재선');
@@ -66,28 +59,28 @@ describe('MusicianService', () => {
 
   // == updateMusicianById  test== //
   describe('updateMusicianById test', () => {
-    
+
     it('뮤지션 수정 (이름) - 성공', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
       await service.createMusician(createMusicianDto);
 
-      const result : ResponseMusicianDto[] = await service.getAllMusicians();
-      const saveMusician : ResponseMusicianDto = result[0];
+      const result: ResponseMusicianDto[] = await service.getAllMusicians();
+      const saveMusician: ResponseMusicianDto = result[0];
       const updateId = saveMusician.id;
 
-      const updateMusicianDto : UpdateMusicianDto = {
-        name : 'tester'
+      const updateMusicianDto: UpdateMusicianDto = {
+        name: 'tester'
       }
       //when
       await service.updateMusicianById(updateId, updateMusicianDto)
-      const updateResult : ResponseMusicianDto[] = await service.getAllMusicians();
-      const updateMusician : ResponseMusicianDto = updateResult[0];
+      const updateResult: ResponseMusicianDto[] = await service.getAllMusicians();
+      const updateMusician: ResponseMusicianDto = updateResult[0];
 
       //then
       expect(updateMusician.name).toEqual('tester')
@@ -99,26 +92,26 @@ describe('MusicianService', () => {
 
     it('뮤지션 나이 변경 - 성공', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
       await service.createMusician(createMusicianDto);
 
-      const result : ResponseMusicianDto[] = await service.getAllMusicians();
-      const saveMusician : ResponseMusicianDto = result[0];
+      const result: ResponseMusicianDto[] = await service.getAllMusicians();
+      const saveMusician: ResponseMusicianDto = result[0];
       const updateId = saveMusician.id;
 
-      const updateMusicianDto : UpdateMusicianDto = {
-        age : 10
+      const updateMusicianDto: UpdateMusicianDto = {
+        age: 10
       }
 
       //when
       await service.updateMusicianById(updateId, updateMusicianDto)
-      const updateResult : ResponseMusicianDto[] = await service.getAllMusicians();
-      const updateMusician : ResponseMusicianDto = updateResult[0];
+      const updateResult: ResponseMusicianDto[] = await service.getAllMusicians();
+      const updateMusician: ResponseMusicianDto = updateResult[0];
 
       //then
       expect(updateMusician.name).toEqual('염재선')
@@ -130,9 +123,9 @@ describe('MusicianService', () => {
 
     it('뮤지션 수정 실패 - 해당 id의 데이터 없음', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
@@ -142,8 +135,8 @@ describe('MusicianService', () => {
       //when
       const wrongUpdateId = 'adsfasdfasdfasdfasdf';
 
-      const updateMusicianDto : UpdateMusicianDto = {
-        age : 10
+      const updateMusicianDto: UpdateMusicianDto = {
+        age: 10
       }
 
       //then
@@ -152,27 +145,27 @@ describe('MusicianService', () => {
       )
     })
   })
-  
+
   //==  deleteMusician test == //
   describe('deleteMusician test', () => {
 
     it('뮤지션 삭제 - 성공', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
       await service.createMusician(createMusicianDto);
 
-      const result : ResponseMusicianDto[] = await service.getAllMusicians();
-      const saveMusician : ResponseMusicianDto = result[0];
+      const result: ResponseMusicianDto[] = await service.getAllMusicians();
+      const saveMusician: ResponseMusicianDto = result[0];
       const deleteId = saveMusician.id;
 
       //when
       await service.deleteMusician(deleteId);
-      const deleteResult : ResponseMusicianDto[] = await service.getAllMusicians();
+      const deleteResult: ResponseMusicianDto[] = await service.getAllMusicians();
 
       //then
       expect(deleteResult.length).toEqual(0)
@@ -181,9 +174,9 @@ describe('MusicianService', () => {
 
     it('뮤지션 삭제 실패 - 해당 id의 데이터가 없음', async () => {
       //given
-      const createMusicianDto : CreateMusicianDto = {
-        name : '염재선',
-        age : 16,
+      const createMusicianDto: CreateMusicianDto = {
+        name: '염재선',
+        age: 16,
         gender: Gender.MALE
       }
 
@@ -198,11 +191,6 @@ describe('MusicianService', () => {
       )
     })
   })
-   
 
-=======
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
->>>>>>> c86b86f (Feat: Add album service)
+
 });
