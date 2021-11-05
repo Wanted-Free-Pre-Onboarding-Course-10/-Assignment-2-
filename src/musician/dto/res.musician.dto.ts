@@ -18,7 +18,11 @@ export class ResponseMusicianDto{
             age,
             gender,
             createdAt : Date.parse(createdAt),
+<<<<<<< HEAD
             updatedAt : updatedAt ? Date.parse(updatedAt) : 0
+=======
+            updatedAt : Date.parse(updatedAt)
+>>>>>>> c86b86f (Feat: Add album service)
         }
 
         return responseDto

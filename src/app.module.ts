@@ -27,4 +27,8 @@ import { Neo4jService } from './neo4j/neo4j.service';
   controllers: [],
   providers: [],
 })
+<<<<<<< HEAD
 export class AppModule {}
+=======
+export class AppModule {}
+>>>>>>> c86b86f (Feat: Add album service)

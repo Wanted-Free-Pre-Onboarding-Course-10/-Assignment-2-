@@ -1,10 +1,13 @@
 import { Test, TestingModule } from '@nestjs/testing';
+<<<<<<< HEAD
 import { MusicianNotFoundException } from '../exception/musician_not_found_exception';
 import { Neo4jModule } from '../neo4j/neo4j.module';
 import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { UpdateMusicianDto } from './dto/update.musician.dto';
 import { Gender } from './gender.enum';
+=======
+>>>>>>> c86b86f (Feat: Add album service)
 import { MusicianService } from './musician.service';
 
 describe('MusicianService', () => {
@@ -12,6 +15,7 @@ describe('MusicianService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
+<<<<<<< HEAD
       // this is test neo4j db
       imports: [
         Neo4jModule.forRoot({
@@ -22,12 +26,15 @@ describe('MusicianService', () => {
           password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
         })
       ],
+=======
+>>>>>>> c86b86f (Feat: Add album service)
       providers: [MusicianService],
     }).compile();
 
     service = module.get<MusicianService>(MusicianService);
   });
 
+<<<<<<< HEAD
   afterEach(async () => {
     await service.clear()
   })
@@ -193,4 +200,9 @@ describe('MusicianService', () => {
   })
    
 
+=======
+  it('should be defined', () => {
+    expect(service).toBeDefined();
+  });
+>>>>>>> c86b86f (Feat: Add album service)
 });
