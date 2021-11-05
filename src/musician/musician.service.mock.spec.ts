@@ -80,4 +80,40 @@ describe("MusicianService", () => {
       expect(result[0].albumId).toBeTruthy();
     });
   });
+
+  describe("getSongsByMusician", () => {
+    it("반환된 노래들에는 songId가 있어야한다.", async () => {
+      // given
+      const songRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            songId: faker.datatype.uuid(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+
+      const anotherSongRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            songId: faker.datatype.uuid(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+
+      const musicianId = faker.datatype.uuid();
+
+      neo4jService.read = jest.fn().mockResolvedValueOnce({
+        records: [songRecord, anotherSongRecord],
+      });
+
+      // when
+      const result = await service.getSongsByMusician(musicianId);
+
+      // then
+      expect(result[0].songId).toBeTruthy();
+      expect(result[1].songId).toBeTruthy();
+    });
+  });
 });
