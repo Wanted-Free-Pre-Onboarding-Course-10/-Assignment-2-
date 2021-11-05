@@ -5,7 +5,11 @@ import { ResponseAlbumDto } from './dto/res.album.dto';
 import { Album } from './album.entity';
 import { UpdateAlbumDto } from './dto/update.album.dto';
 import { AlbumNotFoundException } from 'src/exception/album_not_found_exception';
-import { DELETE_SUCCESS_MSG } from 'src/message/messgae';
+import { CONNECTION_SUCCESS_MSG, DELETE_SUCCESS_MSG, DISCONNECDTION_SUCCESS_MSG } from 'src/message/messgae';
+import { ConnectionDto } from 'src/song/dto/connection.dto';
+import { ConnectionFailException } from 'src/exception/connect_fail_exception';
+import { ConnectionException } from 'src/exception/cannot_connect_exception';
+import { DisconnectException } from 'src/exception/cannot_disconnect_exception';
 
 export type AlbumLabel = Node
 
@@ -72,7 +76,7 @@ export class AlbumService {
     // name이 들어왔을 경우
     if (name) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.name = $name, n.updatedAt = $updatedAt
          RETURN n
          `,
@@ -87,7 +91,7 @@ export class AlbumService {
     // releaseDate이 들어왔을 경우
     if (releaseDate) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.releaseDate = $releaseDate, n.updatedAt = $updatedAt
          RETURN n
         `,
@@ -102,7 +106,7 @@ export class AlbumService {
     // genre가 들어왔을 경우
     if (genre) {
       updatedAlbum = await this.neo4jService.write(
-        `MATCH (n {id: $id})
+        `MATCH (n : Album {id: $id})
          SET n.genre = $genre, n.updatedAt = $updatedAt
          RETURN n
         `,
@@ -126,7 +130,7 @@ export class AlbumService {
   // == delete album == //
   async deleteAlbumById(id: string): Promise<string> {
     const result = await this.neo4jService.write(
-      `MATCH (n {id : $id})
+      `MATCH (n : Album {id : $id})
              DELETE n
              RETURN n
             `,
@@ -138,6 +142,87 @@ export class AlbumService {
     this.checkExistenceOfAlbum(id, result.records);
 
     return DELETE_SUCCESS_MSG;
+  }
+
+  // == connect == //
+  async connect(connectionDto: ConnectionDto, endLabel: string, relationName: string): Promise<string>{
+    if(!await this.isExistedNod(connectionDto.start) || !await this.isExistedNod(connectionDto.end))
+        throw new ConnectionFailException();
+
+    if(await this.isFollowing(connectionDto, endLabel, relationName)){
+        //관계가 있으면 (관계가 있는데 또 관계 추가하려하면)
+        console.log("이미 관계 있다")
+        throw new ConnectionException();
+    }
+
+    await this.neo4jService.write(
+        `
+        match (a: Album), (b: ${endLabel})
+        where a.id = $start AND b.id = $end
+        create (a)-[r:${relationName}]->(b)
+        return type(r)
+        `,
+        {
+            start: connectionDto.start,
+            end: connectionDto.end,
+        }
+    )
+
+    return CONNECTION_SUCCESS_MSG 
+}
+
+// == disconnect ==//
+async disconnect(connectionDto: ConnectionDto, endLabel: string, relationName: string): Promise<string>{
+    if(!await this.isExistedNod(connectionDto.start) || !await this.isExistedNod(connectionDto.end))
+        throw new ConnectionFailException();
+
+    if(!await this.isFollowing(connectionDto, endLabel, relationName)){
+        //관계가 없으면 (관계가 없는데 삭제하려 하면)
+        console.log("관계 없는데 뭘삭제해")
+        throw new DisconnectException();
+    }        
+    
+    await this.neo4jService.write(
+        `
+        match (n :Album{id: $start})-[r:${relationName}]->()
+        delete r
+        `,
+        {
+            start: connectionDto.start,
+        }
+    )
+
+    return DISCONNECDTION_SUCCESS_MSG
+}
+
+  // == 해당 아이디의 노드가 있는지 확인하는 메서드 == //
+  async isExistedNod(id: string){
+      return await this.neo4jService.read(
+          `match (n {id: $id})
+          return count(*) AS count
+          `,
+          {
+              id: id
+          }
+      )
+      .then(res => {
+          return res.records[0].get('count') > 0
+      })
+  }
+
+  // == 관계 있는 지 확인하는 메서드 == //
+  async isFollowing(connectionDto: ConnectionDto ,endLabel: string, relationName: string): Promise<boolean>{
+      return await this.neo4jService.read(`
+          MATCH (target:${endLabel} {id: $end})<-[:${relationName}]-(current:Album {id: $start})
+          RETURN count(*) AS count
+      `, {
+          start: connectionDto.start,
+          end: connectionDto.end,
+      })
+      .then(res => {
+          console.log(res.records[0].get('count'))
+          return res.records[0].get('count') > 0
+      })
   }
 
   // == 해당 아이디의 앨범이 없으면 예외처리하는 메서드 == //
