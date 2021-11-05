@@ -1,10 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MusicianQueryService } from './musician.query.service';
-import { Neo4jService } from '../neo4j/neo4j.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { MusicianQueryService } from "./musician.query.service";
+import { Neo4jService } from "../neo4j/neo4j.service";
 
 const mockNeo4jService = {};
-describe('MusicianService', () => {
+describe("MusicianService", () => {
   let service: MusicianQueryService;
+  let neo4jService: Neo4jService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -20,7 +21,11 @@ describe('MusicianService', () => {
     service = module.get<MusicianQueryService>(MusicianQueryService);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(service).toBeDefined();
+  });
+
+  it("should be defined", () => {
+    expect(neo4jService).toBeDefined();
   });
 });
