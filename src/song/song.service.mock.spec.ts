@@ -58,4 +58,29 @@ describe("AlbumService", () => {
       await expect(result).resolves.toBeTruthy();
     });
   });
+
+  describe("getAlbumBySong", () => {
+    it("songId로 찾은 Album을 반환해야한다.", async () => {
+      // given
+      const albumRecord = {
+        get: jest.fn().mockReturnValue({
+          properties: {
+            albumId: faker.datatype.uuid(),
+            name: faker.name.title(),
+          },
+        }),
+      };
+      const songId = faker.datatype.uuid();
+
+      neo4jService.read = jest.fn().mockResolvedValueOnce({
+        records: [albumRecord],
+      });
+
+      // when
+      const result = await songQueryService.getAlbumBySong(songId);
+
+      // then
+      expect(result[0].albumId).toBeTruthy();
+    });
+  });
 });
