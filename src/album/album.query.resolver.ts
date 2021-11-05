@@ -1,12 +1,12 @@
 import { Args, Query, Resolver } from '@nestjs/graphql';
 import { Album } from './graph.album.entity';
-import { AlbumService } from './album.service';
+import { AlbumQueryService } from './album.query.service';
 import { Musician } from '../musician/graph.musician.entity';
 import { Song } from '../song/graph.song.entity';
 
 @Resolver()
-export class AlbumResolver {
-  constructor(private albumService: AlbumService) {}
+export class AlbumQueryResolver {
+  constructor(private albumService: AlbumQueryService) {}
 
   @Query(() => [Album])
   async getAllAlbum(): Promise<Album[]> {

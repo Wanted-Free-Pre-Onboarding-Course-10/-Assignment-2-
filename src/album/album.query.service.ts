@@ -6,7 +6,7 @@ import { Song } from '../song/graph.song.entity';
 import { ALBUM_TO_SONG, SONG_TO_MUSICIAN } from '../relation/relation';
 
 @Injectable()
-export class AlbumService {
+export class AlbumQueryService {
   constructor(private readonly neo4jService: Neo4jService) {}
 
   async getAllAlbum(): Promise<Album[]> {

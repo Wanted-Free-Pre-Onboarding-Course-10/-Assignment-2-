@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { MusicianController } from './musician.controller';
-import { MusicianService } from './musician.service';
-import { MusicianResolver } from './musician.resolver';
+import { MusicianQueryService } from './musician.query.service';
+import { MusicianQueryResolver } from './musician.query.resolver';
 
 @Module({
   controllers: [MusicianController],
-  providers: [MusicianService, MusicianResolver],
+  providers: [MusicianQueryService, MusicianQueryResolver],
 })
 export class MusicianModule {}

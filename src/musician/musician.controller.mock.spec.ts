@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { MusicianController } from './musician.controller';
-import { MusicianService } from './musician.service';
+import { MusicianQueryService } from './musician.query.service';
 
 const mockMusicianService = {};
 describe('MusicianController', () => {
@@ -11,7 +11,7 @@ describe('MusicianController', () => {
       controllers: [MusicianController],
       providers: [
         {
-          provide: MusicianService,
+          provide: MusicianQueryService,
           useValue: mockMusicianService,
         },
       ],

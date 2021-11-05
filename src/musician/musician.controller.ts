@@ -9,11 +9,11 @@ import {
 } from '@nestjs/common';
 import { MusicianDto } from './dto/musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
-import { Musician, MusicianService } from './musician.service';
+import { Musician, MusicianQueryService } from './musician.query.service';
 
 @Controller('musician')
 export class MusicianController {
-  constructor(private musicianService: MusicianService) {}
+  constructor(private musicianService: MusicianQueryService) {}
 
   @Get()
   async getAllMusicians(): Promise<ResponseMusicianDto[]> {

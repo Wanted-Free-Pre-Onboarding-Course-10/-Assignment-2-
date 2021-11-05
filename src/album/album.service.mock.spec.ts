@@ -1,5 +1,5 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AlbumService } from './album.service';
+import { AlbumQueryService } from './album.query.service';
 import { Neo4jService } from '../neo4j/neo4j.service';
 import * as faker from 'faker';
 
@@ -9,13 +9,13 @@ const mockNeo4jService = {
 
 jest.mock('neo4j-driver');
 describe('AlbumService', () => {
-  let service: AlbumService;
+  let service: AlbumQueryService;
   let neo4jService: Neo4jService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AlbumService,
+        AlbumQueryService,
         {
           provide: Neo4jService,
           useValue: mockNeo4jService,
@@ -23,7 +23,7 @@ describe('AlbumService', () => {
       ],
     }).compile();
 
-    service = module.get<AlbumService>(AlbumService);
+    service = module.get<AlbumQueryService>(AlbumQueryService);
     neo4jService = module.get<Neo4jService>(Neo4jService);
   });
 

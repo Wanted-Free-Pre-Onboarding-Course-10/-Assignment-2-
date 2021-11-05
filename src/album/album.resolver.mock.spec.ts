@@ -1,23 +1,23 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { AlbumResolver } from './album.resolver';
-import { AlbumService } from './album.service';
+import { AlbumQueryResolver } from './album.query.resolver';
+import { AlbumQueryService } from './album.query.service';
 
 const mockService = {};
 describe('AlbumResolver', () => {
-  let resolver: AlbumResolver;
+  let resolver: AlbumQueryResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
       providers: [
-        AlbumResolver,
+        AlbumQueryResolver,
         {
-          provide: AlbumService,
+          provide: AlbumQueryService,
           useValue: mockService,
         },
       ],
     }).compile();
 
-    resolver = module.get<AlbumResolver>(AlbumResolver);
+    resolver = module.get<AlbumQueryResolver>(AlbumQueryResolver);
   });
 
   it('should be defined', () => {

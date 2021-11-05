@@ -8,7 +8,7 @@ import { ResponseMusicianDto } from './dto/res.musician.dto';
 export type Musician = Node;
 
 @Injectable()
-export class MusicianService {
+export class MusicianQueryService {
   private logger = new Logger('MusicianService');
   constructor(private readonly neo4jService: Neo4jService) {}
 
