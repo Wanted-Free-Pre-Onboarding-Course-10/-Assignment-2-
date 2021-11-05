@@ -1,13 +1,10 @@
 import { Field, ObjectType } from '@nestjs/graphql';
 
 @ObjectType()
-export class MusicianGraphqlDto {
+export class Song {
   @Field()
-  id: string;
+  songId!: string;
 
   @Field()
-  name: string;
-
-  @Field()
-  age: number;
+  title: string;
 }

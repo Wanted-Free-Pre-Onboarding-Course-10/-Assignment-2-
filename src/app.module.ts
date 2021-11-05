@@ -1,34 +1,34 @@
-import { Module } from '@nestjs/common';
-import { MusicianModule } from './musician/musician.module';
-import { SongModule } from './song/song.module';
-import { AlbumModule } from './album/album.module';
-import { Neo4jModule } from './neo4j/neo4j.module';
-import { GraphQLModule } from '@nestjs/graphql';
-import { Neo4jService } from './neo4j/neo4j.service';
+import { Module } from "@nestjs/common";
+import { MusicianModule } from "./musician/musician.module";
+import { SongModule } from "./song/song.module";
+import { AlbumModule } from "./album/album.module";
+import { Neo4jModule } from "./neo4j/neo4j.module";
+import { GraphQLModule } from "@nestjs/graphql";
+import { ConfigModule } from "@nestjs/config";
 
 @Module({
   imports: [
-    Neo4jModule.forRoot({
-      scheme: 'neo4j+s',
-      host: 'e0f0bfda.databases.neo4j.io',
-      port: 7687,
-      username: 'neo4j',
-      password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
-    })
-    ,
-    GraphQLModule.forRoot({
-      autoSchemaFile: 'schema.gpl'
+    ConfigModule.forRoot({
+      isGlobal: true,
+      envFilePath: process.env.NODE_ENV === "dev" ? ".env.dev" : ".env.prod",
     }),
-    MusicianModule, 
-    SongModule, 
-    AlbumModule, 
-    Neo4jModule,
+    Neo4jModule.forRootAsync({
+      useFactory: async () => ({
+        scheme: process.env.DB_SCHEME,
+        host: process.env.DB_HOST,
+        port: process.env.DB_PORT,
+        username: process.env.DB_USERNAME,
+        password: process.env.DB_PASSWORD,
+      }),
+    }),
+    GraphQLModule.forRoot({
+      autoSchemaFile: "schema.gpl",
+    }),
+    MusicianModule,
+    SongModule,
+    AlbumModule,
   ],
   controllers: [],
   providers: [],
 })
-<<<<<<< HEAD
 export class AppModule {}
-=======
-export class AppModule {}
->>>>>>> c86b86f (Feat: Add album service)
