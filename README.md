@@ -80,7 +80,7 @@ npm install
 3. 서버를 실행합니다.
 ```
 npm run start
-
+```
 
 ## 팀원
 
