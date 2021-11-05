@@ -12,6 +12,7 @@ import { AlbumService } from "./album.service";
 import { CreateAlbumDto } from "./dto/create.album.dto";
 import { ResponseAlbumDto } from "./dto/res.album.dto";
 import { UpdateAlbumDto } from "./dto/update.album.dto";
+import { ALBUM_TO_SONG } from "../relation/relation";
 
 @Controller("album")
 export class AlbumController {
@@ -47,11 +48,19 @@ export class AlbumController {
 
   @Post("/connect/song")
   async connectToAlbum(@Body() connectionDto: ConnectionDto) {
-    return await this.albumService.connect(connectionDto, "Song", "HAS");
+    return await this.albumService.connect(
+      connectionDto,
+      "Song",
+      ALBUM_TO_SONG
+    );
   }
 
   @Post("/disconnect/song")
   async disconnectToAlbum(@Body() connectionDto: ConnectionDto) {
-    return await this.albumService.disconnect(connectionDto, "Song", "HAS");
+    return await this.albumService.disconnect(
+      connectionDto,
+      "Song",
+      ALBUM_TO_SONG
+    );
   }
 }
