@@ -1,12 +1,20 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { AlbumResolver } from './album.resolver';
+import { AlbumService } from './album.service';
 
+const mockService = {};
 describe('AlbumResolver', () => {
   let resolver: AlbumResolver;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      providers: [AlbumResolver],
+      providers: [
+        AlbumResolver,
+        {
+          provide: AlbumService,
+          useValue: mockService,
+        },
+      ],
     }).compile();
 
     resolver = module.get<AlbumResolver>(AlbumResolver);
