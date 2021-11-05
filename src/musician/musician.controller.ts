@@ -1,10 +1,14 @@
-import { Body, Controller, Delete, Get, Patch, Post, Query } from '@nestjs/common';
-import { MusicianDto } from './dto/musician.dto';
+import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, UseFilters } from '@nestjs/common';
+import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
-import { Musician, MusicianService } from './musician.service';
+import { UpdateMusicianDto } from './dto/update.musician.dto';
+import { MusicianService } from './musician.service';
 
 @Controller('musician')
+// @UseFilters(new HttpExceptionFil)
 export class MusicianController {
+    private logger = new Logger('MusicianController')
+    
     constructor(
         private musicianService: MusicianService
     ){}
@@ -17,18 +21,24 @@ export class MusicianController {
     }
 
     @Post()
-    async createMusician(@Body() musicianDto: MusicianDto): Promise<Musician> {
-        return await this.musicianService.createMusician(musicianDto);
+    async createMusician(@Body() createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto> {
+        return await this.musicianService.createMusician(createMusicianDto);
     }
 
-    @Patch()
-    async updateMusicianAge(@Body() muisicianDto: MusicianDto){
-        this.musicianService.updateMusicianAge(muisicianDto)
+    @Patch('/:id')
+    async updateMusicianById(
+        @Param('id') id : string ,
+        @Body() updateMusicianDto: UpdateMusicianDto
+        ): Promise<ResponseMusicianDto>{
+        this.logger.debug(`updateMusician controller dto : ${JSON.stringify(updateMusicianDto)}`)
+        return await this.musicianService.updateMusicianById(id, updateMusicianDto)
     }
 
-    @Delete()
-    async deleteMusician(@Query('name') name : string){
-        this.musicianService.deleteMusicianByName(name);
+    @Delete("/:id")
+    async deleteMusician(
+        @Param('id') id : string ,
+    ) : Promise<string>{
+        return await this.musicianService.deleteMusician(id);
     }
 
 }
