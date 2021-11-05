@@ -58,7 +58,7 @@ export class AlbumQueryService {
     return result.records.map((song) => {
       const res: Song = {
         id: song.get("song").properties.id,
-        name: song.get("song").properties.title,
+        name: song.get("song").properties.name,
       };
       return res;
     });
