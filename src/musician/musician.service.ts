@@ -61,7 +61,8 @@ export class MusicianService {
                 age : musician.age,
                 gender : musician.gender,
                 createdAt : musician.createdAt.toString(),
-            })
+            }
+        )
 
         const createdMusician = result.records[0].get('n');
 
@@ -101,7 +102,7 @@ export class MusicianService {
     async deleteMusician(id : string) : Promise<string>{
         const result = 
         await this.neo4jService.write(
-            `MATCH (n {id : $id})
+            `MATCH (n : Musician {id : $id})
              DELETE n
              RETURN n
             `,
@@ -119,7 +120,7 @@ export class MusicianService {
     async clear(){
         await this.neo4jService.write(
             `
-             MATCH (n)
+             MATCH (n : Musician)
              DETACH DELETE n
             `,
             {}
@@ -135,7 +136,7 @@ export class MusicianService {
     // == 뮤지션 이름 업데이트 == //
     private async updateName(id: string, name: string){
         const result = await this.neo4jService.write(
-            `MATCH (n {id: $id}) 
+            `MATCH (n : Musician {id: $id}) 
              SET n.name = $name, n.updatedAt = $updatedAt
              RETURN n
             `, 
@@ -157,7 +158,7 @@ export class MusicianService {
     // == 뮤지션 나이 업데이트 == //
     private async updateAge(id: string, age: number){
         const result = await this.neo4jService.write(
-            `MATCH (n {id: $id}) 
+            `MATCH (n : Musician {id: $id}) 
              SET n.age = $age, n.updatedAt = $updatedAt
              RETURN n
             `, 
