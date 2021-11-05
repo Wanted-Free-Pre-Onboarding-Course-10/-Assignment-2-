@@ -1,60 +1,16 @@
-import { Injectable, Logger } from '@nestjs/common';
-import { Node } from 'neo4j-driver-core';
-import { Neo4jService } from '../neo4j/neo4j.service';
-import { MusicianGraphqlDto } from './dto/graphql.musician.dto';
-import { MusicianDto } from './dto/musician.dto';
-import { ResponseMusicianDto } from './dto/res.musician.dto';
+import { Injectable, Logger } from "@nestjs/common";
+import { Node } from "neo4j-driver-core";
+import { Neo4jService } from "../neo4j/neo4j.service";
+import { MusicianGraphqlDto } from "./dto/graphql.musician.dto";
+import { MusicianDto } from "./dto/musician.dto";
+import { ResponseMusicianDto } from "./dto/res.musician.dto";
 
 export type Musician = Node;
 
 @Injectable()
 export class MusicianQueryService {
-  private logger = new Logger('MusicianService');
+  private logger = new Logger("MusicianService");
   constructor(private readonly neo4jService: Neo4jService) {}
-
-  async getAllMusicians(): Promise<ResponseMusicianDto[]> {
-    const result = await this.neo4jService.read(
-      `MATCH (n : Musician) 
-             RETURN n
-            `,
-      {},
-    );
-
-    const responseDto: ResponseMusicianDto[] = result.records.map((value) => {
-      const res: ResponseMusicianDto = {
-        id: value.get('n').properties.id,
-        name: value.get('n').properties.name,
-        age: value.get('n').properties.age,
-      };
-
-      return res;
-    });
-
-    this.logger.debug(JSON.stringify(responseDto));
-
-    return responseDto;
-  }
-
-  async getMusiciansGraphql(): Promise<MusicianGraphqlDto[]> {
-    const result = await this.neo4jService.read(
-      `MATCH (n : Musician) 
-             RETURN n
-            `,
-      {},
-    );
-
-    const responseDto: MusicianGraphqlDto[] = result.records.map((value) => {
-      const res: ResponseMusicianDto = {
-        id: value.get('n').properties.id,
-        name: value.get('n').properties.name,
-        age: value.get('n').properties.age,
-      };
-
-      return res;
-    });
-
-    return responseDto;
-  }
 
   async createMusician(musicianDto: MusicianDto): Promise<Musician> {
     const { name, age } = musicianDto;
@@ -69,10 +25,10 @@ export class MusicianQueryService {
           name,
           age,
         },
-      },
+      }
     );
 
-    return result.records[0].get('n');
+    return result.records[0].get("n");
   }
 
   async updateMusicianAge(musicianDto: MusicianDto) {
@@ -84,7 +40,7 @@ export class MusicianQueryService {
       {
         name: musicianDto.name,
         age: musicianDto.age,
-      },
+      }
     );
   }
 
@@ -96,7 +52,7 @@ export class MusicianQueryService {
             `,
       {
         name: name,
-      },
+      }
     );
 
     this.logger.debug(`deleted node : ${result}`);

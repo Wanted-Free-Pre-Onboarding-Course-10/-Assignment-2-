@@ -2,38 +2,43 @@ import {
   Body,
   Controller,
   Delete,
-  Get,
+  Logger,
+  Param,
   Patch,
   Post,
-  Query,
-} from '@nestjs/common';
-import { MusicianDto } from './dto/musician.dto';
-import { ResponseMusicianDto } from './dto/res.musician.dto';
-import { Musician, MusicianQueryService } from './musician.query.service';
+} from "@nestjs/common";
+import { ResponseMusicianDto } from "./dto/res.musician.dto";
+import { MusicianService } from "./musician.service";
+import { CreateMusicianDto } from "./dto/create.musician.dto";
+import { UpdateMusicianDto } from "./dto/update.musician.dto";
 
-@Controller('musician')
+@Controller("musician")
+// @UseFilters(new HttpExceptionFil)
 export class MusicianController {
-  constructor(private musicianService: MusicianQueryService) {}
+  private logger = new Logger("MusicianController");
 
-  @Get()
-  async getAllMusicians(): Promise<ResponseMusicianDto[]> {
-    const greeting = await this.musicianService.getAllMusicians();
-
-    return greeting;
-  }
+  constructor(private musicianService: MusicianService) {}
 
   @Post()
-  async createMusician(@Body() musicianDto: MusicianDto): Promise<Musician> {
-    return await this.musicianService.createMusician(musicianDto);
+  async createMusician(
+    @Body() createMusicianDto: CreateMusicianDto
+  ): Promise<ResponseMusicianDto> {
+    return await this.musicianService.createMusician(createMusicianDto);
   }
 
-  @Patch()
-  async updateMusicianAge(@Body() muisicianDto: MusicianDto) {
-    return this.musicianService.updateMusicianAge(muisicianDto);
+  @Patch("/:id")
+  async updateMusicianById(
+    @Param("id") id: string,
+    @Body() updateMusicianDto: UpdateMusicianDto
+  ): Promise<ResponseMusicianDto> {
+    this.logger.debug(
+      `updateMusician controller dto : ${JSON.stringify(updateMusicianDto)}`
+    );
+    return await this.musicianService.updateMusicianById(id, updateMusicianDto);
   }
 
-  @Delete()
-  async deleteMusician(@Query('name') name: string) {
-    return this.musicianService.deleteMusicianByName(name);
+  @Delete("/:id")
+  async deleteMusician(@Param("id") id: string): Promise<string> {
+    return await this.musicianService.deleteMusician(id);
   }
 }
