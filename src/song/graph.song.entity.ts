@@ -6,5 +6,5 @@ export class Song {
   id!: string;
 
   @Field()
-  title: string;
+  name: string;
 }
