@@ -5,6 +5,7 @@ import { Neo4jService } from '../neo4j/neo4j.service';
 const mockNeo4jService = {};
 describe('AlbumService', () => {
   let service: AlbumService;
+  let neo4jService: Neo4jService;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -18,9 +19,14 @@ describe('AlbumService', () => {
     }).compile();
 
     service = module.get<AlbumService>(AlbumService);
+    neo4jService = module.get<Neo4jService>(Neo4jService);
   });
 
   it('should be defined', () => {
     expect(service).toBeDefined();
+  });
+
+  it('should be defined', () => {
+    expect(neo4jService).toBeDefined();
   });
 });
