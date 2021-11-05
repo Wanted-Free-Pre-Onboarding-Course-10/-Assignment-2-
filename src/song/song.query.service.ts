@@ -22,7 +22,7 @@ export class SongQueryService {
       const title = song.get("song").properties.title;
       const res: Song = {
         id,
-        title,
+        name: title,
       };
       return res;
     });

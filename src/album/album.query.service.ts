@@ -13,7 +13,7 @@ export class AlbumQueryService {
     const result = await this.neo4jService.read(
       `MATCH
                 (album : Album) 
-              RETURN n`,
+              RETURN album`,
       {}
     );
 
@@ -58,7 +58,7 @@ export class AlbumQueryService {
     return result.records.map((song) => {
       const res: Song = {
         id: song.get("song").properties.id,
-        title: song.get("song").properties.title,
+        name: song.get("song").properties.title,
       };
       return res;
     });
