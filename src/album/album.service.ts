@@ -12,34 +12,34 @@ export type AlbumLabel = Node
 @Injectable()
 export class AlbumService {
   constructor(private readonly neo4jService: Neo4jService) { }
-  
-  // == read Album == //
-  async getAllAlbums(): Promise<ResponseAlbumDto[]>{
-    const result = await this.neo4jService.read(
-          `MATCH (n : Album) 
-           RETURN n
-          `, 
-          {}
-    )
-    
-    const responseDto : ResponseAlbumDto[] = result.records.map(value => {
 
-      const res : ResponseAlbumDto = ResponseAlbumDto.createResponseAlnumDto(value.get('n').properties)
+  // == read Album == //
+  async getAllAlbums(): Promise<ResponseAlbumDto[]> {
+    const result = await this.neo4jService.read(
+      `MATCH (n : Album) 
+           RETURN n
+          `,
+      {}
+    )
+
+    const responseDto: ResponseAlbumDto[] = result.records.map(value => {
+
+      const res: ResponseAlbumDto = ResponseAlbumDto.createResponseAlnumDto(value.get('n').properties)
       return res;
-  })
-  return responseDto
+    })
+    return responseDto
   }
-  
+
 
   // == create Album == //
-  async createAlbum(createAlbumDto: CreateAlbumDto): Promise<ResponseAlbumDto>{
+  async createAlbum(createAlbumDto: CreateAlbumDto): Promise<ResponseAlbumDto> {
     const { name, releaseDate, genre } = createAlbumDto;
 
     // album 객체 생성
     const album: Album = Album.createAlbum(name, releaseDate, genre);
 
     const result = await this.neo4jService.write(
-        `
+      `
         CREATE (n: Album) 
          SET n.name = $name,
              n.releaseDate = $releaseDate,
@@ -53,18 +53,18 @@ export class AlbumService {
         name: album.name,
         releaseDate: album.releaseDate,
         genre: album.genre,
-        createdAt : album.createdAt.toString(),
+        createdAt: album.createdAt.toString(),
       })
     const createdAlbum = result.records[0].get('n');
 
     // == createdAlbum to dto == //
     const responseDto = ResponseAlbumDto.createResponseAlnumDto(createdAlbum.properties);
-    
+
     return responseDto;
   }
 
   // == update album == //
-  async updateAlbumById(id: string, updateAlbumDto: UpdateAlbumDto): Promise<ResponseAlbumDto>{
+  async updateAlbumById(id: string, updateAlbumDto: UpdateAlbumDto): Promise<ResponseAlbumDto> {
     const { name, releaseDate, genre } = updateAlbumDto;
 
     let updatedAlbum;
@@ -79,7 +79,7 @@ export class AlbumService {
         {
           id,
           name,
-          updatedAt:(new Date()).toString()
+          updatedAt: (new Date()).toString()
         }
       )
     }
@@ -94,7 +94,7 @@ export class AlbumService {
         {
           id,
           releaseDate,
-          updatedAt:(new Date()).toString()
+          updatedAt: (new Date()).toString()
         }
       )
     }
@@ -109,14 +109,14 @@ export class AlbumService {
         {
           id,
           genre,
-          updatedAt:(new Date()).toString()
+          updatedAt: (new Date()).toString()
         }
       )
     }
 
     // == 해당 아이디의 앨범이 있는지 확인 == //
     this.checkExistenceOfAlbum(id, updatedAlbum.records);
-    
+
     // == updatedAlbum to dto == //
     const responseDto = ResponseAlbumDto.createResponseAlnumDto(updatedAlbum.records[0].get('n').properties);
 
@@ -124,15 +124,15 @@ export class AlbumService {
   }
 
   // == delete album == //
-  async deleteAlbumById(id: string): Promise<string>{
+  async deleteAlbumById(id: string): Promise<string> {
     const result = await this.neo4jService.write(
-            `MATCH (n {id : $id})
+      `MATCH (n {id : $id})
              DELETE n
              RETURN n
             `,
-            {
-                id: id
-            }
+      {
+        id: id
+      }
     );
     // == 해당 아이디의 앨범이 있는지 확인 == //
     this.checkExistenceOfAlbum(id, result.records);
@@ -141,8 +141,8 @@ export class AlbumService {
   }
 
   // == 해당 아이디의 앨범이 없으면 예외처리하는 메서드 == //
-  private checkExistenceOfAlbum(id: string, records: Array<any>){
-    if(records.length == 0)
-        throw new AlbumNotFoundException(id);
-}
+  private checkExistenceOfAlbum(id: string, records: Array<any>) {
+    if (records.length == 0)
+      throw new AlbumNotFoundException(id);
+  }
 }

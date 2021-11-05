@@ -1,9 +1,11 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { MusicianController } from './musician.controller';
-import { MusicianQueryService } from './musician.query.service';
+import { Test, TestingModule } from "@nestjs/testing";
+import { MusicianController } from "./musician.controller";
+import { MusicianQueryService } from "./musician.query.service";
+import { MusicianService } from "./musician.service";
 
+const mockMusicianQueryService = {};
 const mockMusicianService = {};
-describe('MusicianController', () => {
+describe("MusicianController", () => {
   let controller: MusicianController;
 
   beforeEach(async () => {
@@ -12,6 +14,10 @@ describe('MusicianController', () => {
       providers: [
         {
           provide: MusicianQueryService,
+          useValue: mockMusicianQueryService,
+        },
+        {
+          provide: MusicianService,
           useValue: mockMusicianService,
         },
       ],
@@ -20,7 +26,7 @@ describe('MusicianController', () => {
     controller = module.get<MusicianController>(MusicianController);
   });
 
-  it('should be defined', () => {
+  it("should be defined", () => {
     expect(controller).toBeDefined();
   });
 });

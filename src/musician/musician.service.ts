@@ -1,10 +1,9 @@
 import { Injectable, Logger } from "@nestjs/common";
 import { response } from "express";
 import { Node } from "neo4j-driver";
-
-import { MusicianNotFoundException } from "src/exception/musician_not_found_exception";
-import { DELETE_SUCCESS_MSG } from "src/message/messgae";
-import { Neo4jService } from "src/neo4j/neo4j.service";
+import { MusicianNotFoundException } from "../exception/musician_not_found_exception";
+import { DELETE_SUCCESS_MSG } from "../message/messgae";
+import { Neo4jService } from "../neo4j/neo4j.service";
 import { CreateMusicianDto } from "./dto/create.musician.dto";
 import { ResponseMusicianDto } from "./dto/res.musician.dto";
 import { UpdateMusicianDto } from "./dto/update.musician.dto";
@@ -17,6 +16,7 @@ export class MusicianService {
   private logger = new Logger("MusicianService");
   constructor(private readonly neo4jService: Neo4jService) {}
 
+  //== read all musiccian  == //
   async getAllMusicians(): Promise<ResponseMusicianDto[]> {
     const result = await this.neo4jService.read(
       `MATCH (n : Musician) 
@@ -40,6 +40,7 @@ export class MusicianService {
     return responseDto;
   }
 
+  // == create musician == //
   async createMusician(
     createMusicianDto: CreateMusicianDto
   ): Promise<ResponseMusicianDto> {
@@ -97,7 +98,6 @@ export class MusicianService {
     if (age) {
       updatedMusician = await this.updateAge(id, age);
     }
-
     // == updatedMusician to dto == //
     const repsonseDto = ResponseMusicianDto.createResponseMusicianDto(
       updatedMusician.properties
@@ -111,7 +111,7 @@ export class MusicianService {
   // == delete musician == //
   async deleteMusician(id: string): Promise<string> {
     const result = await this.neo4jService.write(
-      `MATCH (n {id : $id})
+      `MATCH (n : Musician {id : $id})
              DELETE n
              RETURN n
             `,
@@ -129,7 +129,7 @@ export class MusicianService {
   async clear() {
     await this.neo4jService.write(
       `
-             MATCH (n)
+             MATCH (n : Musician)
              DETACH DELETE n
             `,
       {}
@@ -144,7 +144,7 @@ export class MusicianService {
   // == 뮤지션 이름 업데이트 == //
   private async updateName(id: string, name: string) {
     const result = await this.neo4jService.write(
-      `MATCH (n {id: $id}) 
+      `MATCH (n : Musician {id: $id}) 
              SET n.name = $name, n.updatedAt = $updatedAt
              RETURN n
             `,
@@ -166,7 +166,7 @@ export class MusicianService {
   // == 뮤지션 나이 업데이트 == //
   private async updateAge(id: string, age: number) {
     const result = await this.neo4jService.write(
-      `MATCH (n {id: $id}) 
+      `MATCH (n : Musician {id: $id}) 
              SET n.age = $age, n.updatedAt = $updatedAt
              RETURN n
             `,
