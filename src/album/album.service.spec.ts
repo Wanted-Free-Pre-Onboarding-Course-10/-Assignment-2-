@@ -105,5 +105,19 @@ describe('AlbumService', () => {
       // then
       expect(result[0].musicianId).toBeTruthy();
     });
+
+    it('앨범과 곡의 관계 설정이 잘못되어있다면 빈 배열을 반환한다.', async () => {
+      // given
+      const albumId = faker.datatype.uuid();
+      neo4jService.read = jest.fn().mockResolvedValue({
+        records: [],
+      });
+
+      // when
+      const result = await service.getMusicianByAlbum(albumId);
+
+      // then
+      expect(result.length === 0).toBeTruthy();
+    });
   });
 });
