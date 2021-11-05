@@ -1,9 +1,15 @@
 import { Injectable, Logger } from '@nestjs/common';
 import { response } from 'express';
 import { Node } from 'neo4j-driver';
+<<<<<<< HEAD
 import { MusicianNotFoundException } from '../exception/musician_not_found_exception';
 import { DELETE_SUCCESS_MSG } from '../message/messgae';
 import { Neo4jService } from '../neo4j/neo4j.service';
+=======
+import { MusicianNotFoundException } from 'src/exception/musician_not_found_exception';
+import { DELETE_SUCCESS_MSG } from 'src/message/messgae';
+import { Neo4jService } from 'src/neo4j/neo4j.service';
+>>>>>>> c86b86f (Feat: Add album service)
 import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { UpdateMusicianDto } from './dto/update.musician.dto';
@@ -16,7 +22,11 @@ export class MusicianService {
     private logger = new Logger('MusicianService')
     constructor(private readonly neo4jService : Neo4jService) {}
 
+<<<<<<< HEAD
     //== read all musiccian  == //
+=======
+    // == graphql X read == //
+>>>>>>> c86b86f (Feat: Add album service)
     async getAllMusicians() : Promise<ResponseMusicianDto[]>{
         const result = await this.neo4jService.read(
             `MATCH (n : Musician) 
@@ -38,6 +48,11 @@ export class MusicianService {
         return responseDto
     }
 
+<<<<<<< HEAD
+=======
+    // =============================== //
+
+>>>>>>> c86b86f (Feat: Add album service)
     // == create musician == //
     async createMusician(createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto>{
         const { name, age, gender } = createMusicianDto;
@@ -88,7 +103,10 @@ export class MusicianService {
         if(age){
             updatedMusician = await this.updateAge(id, age);
         }
+<<<<<<< HEAD
 
+=======
+>>>>>>> c86b86f (Feat: Add album service)
         // == updatedMusician to dto == //
         const repsonseDto = ResponseMusicianDto.createResponseMusicianDto(updatedMusician.properties);
         
@@ -115,6 +133,7 @@ export class MusicianService {
         return DELETE_SUCCESS_MSG;
     }
 
+<<<<<<< HEAD
     // == clear DB == //
     async clear(){
         await this.neo4jService.write(
@@ -126,6 +145,8 @@ export class MusicianService {
         );
     }
 
+=======
+>>>>>>> c86b86f (Feat: Add album service)
     // == 해당 아이디의 뮤지션이 없으면 예외처리하는 메서드 == //
     private checkExistenceOfMusician(id: string, records: Array<any>){
         if(records.length == 0)
