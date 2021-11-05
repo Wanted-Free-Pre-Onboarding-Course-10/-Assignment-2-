@@ -3,6 +3,7 @@ import { Neo4jService } from '../neo4j/neo4j.service';
 import { Album } from './album.entity';
 import { Musician } from '../musician/musician.entity';
 import { Song } from '../song/song.entity';
+import { ALBUM_TO_SONG, SONG_TO_MUSICIAN } from '../relation/relation';
 
 @Injectable()
 export class AlbumService {
@@ -30,8 +31,8 @@ export class AlbumService {
   async getMusicianByAlbum(albumId: string): Promise<Musician[]> {
     const result = await this.neo4jService.read(
       `MATCH
-                (album:Album {albumId: "${albumId}"})-[:HAS]-(song),
-                (song)-[:BE_CREATED]-(musician)
+                (album:Album {albumId: "${albumId}"})-[:${ALBUM_TO_SONG}]-(song),
+                (song)-[:${SONG_TO_MUSICIAN}]-(musician)
               RETURN musician`,
       {},
     );
@@ -48,7 +49,7 @@ export class AlbumService {
   async getSongByAlbum(albumId: string) {
     const result = await this.neo4jService.read(
       `MATCH
-                (album:Album {albumId: "${albumId}"})-[:HAS]-(song)
+                (album:Album {albumId: "${albumId}"})-[:${ALBUM_TO_SONG}]-(song)
              RETURN song
             `,
       {},
