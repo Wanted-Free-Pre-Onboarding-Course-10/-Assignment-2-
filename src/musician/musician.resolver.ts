@@ -1,18 +1,13 @@
-import { Args, Query, Resolver } from "@nestjs/graphql";
-import { MusicianGraphqlDto } from "./dto/graphql.musician.dto";
-import { MusicianService } from "./musician.service";
+import { Query, Resolver } from "@nestjs/graphql";
+import { MusicianQueryService } from "./musician.query.service";
+import { Musician } from "./graph.musician.entity";
 
 @Resolver()
 export class MusicianResolver {
-    constructor(
-        private musicianService: MusicianService
-    ) { }
+  constructor(private musicianQueryService: MusicianQueryService) {}
 
-    // == graphql read == //
-    @Query(() => [MusicianGraphqlDto])
-    getMusicianByName(): void {
-        // const result = await this.musicianService.getMusiciansGraphql();
-
-        // return result;
-    }
+  @Query(() => [Musician])
+  async getAllMusician(): Promise<Musician[]> {
+    return await this.musicianQueryService.getAllMusician();
+  }
 }
