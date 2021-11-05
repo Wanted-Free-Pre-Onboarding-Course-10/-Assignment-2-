@@ -63,15 +63,15 @@
 
 | 구현사항  | 구현 여부                                          |
 | ------ | ----------------------------------------------- |
-| 곡 페이지 Read API | o | 
-| 앨범 페이지 Read API | o | 
-| 뮤지션 페이지 Read API | o | 
-| 곡 CUD API | o | 
-| 앨범 CUD API | o | 
-| 뮤지션 CUD API | o | 
-| 뮤지션 - 곡 연결/연결 해제 API | o | 
-| 뮤지션 - 곡 연결/연결 해제 API | o | 
-| 뮤지션 - 앨범 Read API(뮤지션 - 곡, 곡 - 앨범 활용) | o |
+| 곡 페이지 Read API |  OK| 
+| 앨범 페이지 Read API | OK | 
+| 뮤지션 페이지 Read API | OK | 
+| 곡 CUD API | OK | 
+| 앨범 CUD API | OK | 
+| 뮤지션 CUD API | OK | 
+| 뮤지션 - 곡 연결/연결 해제 API | OK | 
+| 뮤지션 - 곡 연결/연결 해제 API | OK| 
+| 뮤지션 - 앨범 Read API(뮤지션 - 곡, 곡 - 앨범 활용) | OK |
 | 뮤지션, 곡, 앨범 관계 구현 |  |
 
 ## API
