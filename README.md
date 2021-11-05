@@ -60,7 +60,7 @@
     - `뮤지션`, `앨범`, `곡` 데이터는 위 relation을 테스트할 수 있을만큼 임의로 생성해주시면 좋습니다.
 
 ## API
-[API문서]()
+[API문서](https://documenter.getpostman.com/view/10344809/UVC2J9qV)
 
 
 ## 팀원
