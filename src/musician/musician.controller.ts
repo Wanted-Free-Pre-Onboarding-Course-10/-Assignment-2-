@@ -1,44 +1,44 @@
-import { Body, Controller, Delete, Get, Logger, Param, Patch, Post, Query, UseFilters } from '@nestjs/common';
-import { CreateMusicianDto } from './dto/create.musician.dto';
-import { ResponseMusicianDto } from './dto/res.musician.dto';
-import { UpdateMusicianDto } from './dto/update.musician.dto';
-import { MusicianService } from './musician.service';
+import {
+  Body,
+  Controller,
+  Delete,
+  Logger,
+  Param,
+  Patch,
+  Post,
+} from "@nestjs/common";
+import { ResponseMusicianDto } from "./dto/res.musician.dto";
+import { MusicianService } from "./musician.service";
+import { CreateMusicianDto } from "./dto/create.musician.dto";
+import { UpdateMusicianDto } from "./dto/update.musician.dto";
 
-@Controller('musician')
+@Controller("musician")
 // @UseFilters(new HttpExceptionFil)
 export class MusicianController {
-    private logger = new Logger('MusicianController')
+  private logger = new Logger("MusicianController");
 
-    constructor(
-        private musicianService: MusicianService
-    ) { }
+  constructor(private musicianService: MusicianService) {}
 
-    @Get()
-    async getAllMusicians(): Promise<ResponseMusicianDto[]> {
-        const greeting = await this.musicianService.getAllMusicians();
+  @Post()
+  async createMusician(
+    @Body() createMusicianDto: CreateMusicianDto
+  ): Promise<ResponseMusicianDto> {
+    return await this.musicianService.createMusician(createMusicianDto);
+  }
 
-        return greeting;
-    }
+  @Patch("/:id")
+  async updateMusicianById(
+    @Param("id") id: string,
+    @Body() updateMusicianDto: UpdateMusicianDto
+  ): Promise<ResponseMusicianDto> {
+    this.logger.debug(
+      `updateMusician controller dto : ${JSON.stringify(updateMusicianDto)}`
+    );
+    return await this.musicianService.updateMusicianById(id, updateMusicianDto);
+  }
 
-    @Post()
-    async createMusician(@Body() createMusicianDto: CreateMusicianDto): Promise<ResponseMusicianDto> {
-        return await this.musicianService.createMusician(createMusicianDto);
-    }
-
-    @Patch('/:id')
-    async updateMusicianById(
-        @Param('id') id: string,
-        @Body() updateMusicianDto: UpdateMusicianDto
-    ): Promise<ResponseMusicianDto> {
-        this.logger.debug(`updateMusician controller dto : ${JSON.stringify(updateMusicianDto)}`)
-        return await this.musicianService.updateMusicianById(id, updateMusicianDto)
-    }
-
-    @Delete("/:id")
-    async deleteMusician(
-        @Param('id') id: string,
-    ): Promise<string> {
-        return await this.musicianService.deleteMusician(id);
-    }
-
+  @Delete("/:id")
+  async deleteMusician(@Param("id") id: string): Promise<string> {
+    return await this.musicianService.deleteMusician(id);
+  }
 }

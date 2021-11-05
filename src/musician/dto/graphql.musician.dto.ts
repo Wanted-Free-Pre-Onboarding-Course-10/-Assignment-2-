@@ -1,14 +1,13 @@
-import { ArgsType, Field, ObjectType } from "@nestjs/graphql";
+import { Field, ObjectType } from "@nestjs/graphql";
 
 @ObjectType()
 export class MusicianGraphqlDto {
-    @Field()
-    id: string;
+  @Field()
+  id: string;
 
-    @Field()
-    name: string;
+  @Field()
+  name: string;
 
-    @Field()
-    age: number;
-
+  @Field()
+  age: number;
 }
