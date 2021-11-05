@@ -6,24 +6,24 @@ import { Song } from "../song/graph.song.entity";
 
 @Resolver()
 export class AlbumResolver {
-  constructor(private albumService: AlbumQueryService) {}
+  constructor(private albumQueryService: AlbumQueryService) {}
 
   @Query(() => [Album])
   async getAllAlbum(): Promise<Album[]> {
-    return await this.albumService.getAllAlbum();
+    return await this.albumQueryService.getAllAlbum();
   }
 
   @Query(() => [Musician])
   async getMusicianByAlbum(
     @Args("albumId", { type: () => String }) albumId: string
   ): Promise<Musician[]> {
-    return await this.albumService.getMusicianByAlbum(albumId);
+    return await this.albumQueryService.getMusicianByAlbum(albumId);
   }
 
   @Query(() => [Song])
   async getSongByAlbum(
     @Args("albumId", { type: () => String }) albumId: string
   ): Promise<Song[]> {
-    return await this.albumService.getSongByAlbum(albumId);
+    return await this.albumQueryService.getSongByAlbum(albumId);
   }
 }
