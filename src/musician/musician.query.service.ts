@@ -18,20 +18,20 @@ export class MusicianQueryService {
     );
 
     return result.records.map((album) => {
-      const musicianId = album.get("musician").properties.musicianId;
+      const id = album.get("musician").properties.id;
       const name = album.get("musician").properties.name;
       const res: Musician = {
-        musicianId,
+        id,
         name,
       };
       return res;
     });
   }
 
-  async getAlbumByMusician(musicianId: string) {
+  async getAlbumByMusician(id: string) {
     const result = await this.neo4jService.read(
       `MATCH
-                (musician:Musician {musicianId: "${musicianId}"})-[:${MUSICIAN_TO_SONG}]-(song),
+                (musician:Musician {id: "${id}"})-[:${MUSICIAN_TO_SONG}]-(song),
                 (song)-[:${SONG_TO_ALBUM}]-(album)
               RETURN album`,
       {}
@@ -39,17 +39,17 @@ export class MusicianQueryService {
 
     return result.records.map((album) => {
       const res: Album = {
-        albumId: album.get("album").properties.albumId,
+        id: album.get("album").properties.id,
         name: album.get("album").properties.name,
       };
       return res;
     });
   }
 
-  async getSongsByMusician(musicianId: string) {
+  async getSongsByMusician(id: string) {
     const result = await this.neo4jService.read(
       `MATCH
-                (musician:Musician {musicianId: "${musicianId}"})-[:${MUSICIAN_TO_SONG}]-(song)
+                (musician:Musician {id: "${id}"})-[:${MUSICIAN_TO_SONG}]-(song)
              RETURN song
             `,
       {}
@@ -57,7 +57,7 @@ export class MusicianQueryService {
 
     return result.records.map((song) => {
       const res: Song = {
-        songId: song.get("song").properties.songId,
+        id: song.get("song").properties.id,
         title: song.get("song").properties.title,
       };
       return res;

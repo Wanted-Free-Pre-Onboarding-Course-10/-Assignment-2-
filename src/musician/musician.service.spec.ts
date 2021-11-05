@@ -1,6 +1,6 @@
 import { Test, TestingModule } from '@nestjs/testing';
+import { AppModule } from '../app.module';
 import { MusicianNotFoundException } from '../exception/musician_not_found_exception';
-import { Neo4jModule } from '../neo4j/neo4j.module';
 import { CreateMusicianDto } from './dto/create.musician.dto';
 import { ResponseMusicianDto } from './dto/res.musician.dto';
 import { UpdateMusicianDto } from './dto/update.musician.dto';
@@ -14,13 +14,7 @@ describe('MusicianService', () => {
     const module: TestingModule = await Test.createTestingModule({
       // this is test neo4j db
       imports: [
-        Neo4jModule.forRoot({
-          scheme: 'neo4j+s',
-          host: 'e0f0bfda.databases.neo4j.io',
-          port: 7687,
-          username: 'neo4j',
-          password: 'f83YWstyvP9iBxvbtZZpPZh_j7mpq3PXZTFrjntIfaU'
-        })
+        AppModule
       ],
       providers: [MusicianService],
     }).compile();

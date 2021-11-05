@@ -41,7 +41,7 @@ describe("AlbumService", () => {
       const albumRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            albumId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -63,7 +63,7 @@ describe("AlbumService", () => {
       const wrongAlbumRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            musicianId: faker.datatype.uuid(),
+            wrongId: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
@@ -77,7 +77,7 @@ describe("AlbumService", () => {
       const result = await service.getAllAlbum();
 
       // then
-      expect(result[0].albumId).toBeUndefined();
+      expect(result[0].id).toBeUndefined();
     });
   });
 
@@ -87,34 +87,34 @@ describe("AlbumService", () => {
       const musicianRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            musicianId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
       };
 
-      const albumId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
 
       neo4jService.read = jest.fn().mockResolvedValueOnce({
         records: [musicianRecord],
       });
 
       // when
-      const result = await service.getMusicianByAlbum(albumId);
+      const result = await service.getMusicianByAlbum(id);
 
       // then
-      expect(result[0].musicianId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
     });
 
     it("앨범과 곡의 관계 설정이 잘못되어있다면 빈 배열을 반환한다.", async () => {
       // given
-      const albumId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
       neo4jService.read = jest.fn().mockResolvedValue({
         records: [],
       });
 
       // when
-      const result = await service.getMusicianByAlbum(albumId);
+      const result = await service.getMusicianByAlbum(id);
 
       // then
       expect(result.length === 0).toBeTruthy();
@@ -127,23 +127,23 @@ describe("AlbumService", () => {
       const songRecord = {
         get: jest.fn().mockReturnValue({
           properties: {
-            songId: faker.datatype.uuid(),
+            id: faker.datatype.uuid(),
             name: faker.name.title(),
           },
         }),
       };
 
-      const albumId = faker.datatype.uuid();
+      const id = faker.datatype.uuid();
 
       neo4jService.read = jest.fn().mockResolvedValueOnce({
         records: [songRecord],
       });
 
       // when
-      const result = await service.getSongByAlbum(albumId);
+      const result = await service.getSongByAlbum(id);
 
       // then
-      expect(result[0].songId).toBeTruthy();
+      expect(result[0].id).toBeTruthy();
     });
   });
 });
