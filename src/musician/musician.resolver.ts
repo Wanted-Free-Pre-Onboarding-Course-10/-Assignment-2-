@@ -1,4 +1,4 @@
-import { Args, Query, Resolver } from '@nestjs/graphql';
+import { Query, Resolver } from '@nestjs/graphql';
 import { MusicianGraphqlDto } from './dto/graphql.musician.dto';
 import { MusicianService } from './musician.service';
 
