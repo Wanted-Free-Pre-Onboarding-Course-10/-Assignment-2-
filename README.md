@@ -139,3 +139,8 @@ npm run start
    
 **4.뮤지션 페이지**
 [바로가기]()
+
+## 회고록
+
+**팀 회고록**
+[바로가기](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%ED%9A%8C%EA%B3%A0%EB%A1%9D)
