@@ -114,10 +114,10 @@ npm run start
 
 새로운 기술을 사용하기 전에 서로 다른 주제를 가지고 동료 학습을 진행했습니다.
 
-- [nestJS](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EC%82%AC%EC%A0%84%ED%95%99%EC%8A%B5-%EB%B0%95%EC%A7%80%EC%9C%A8)
-- [nestJS,neo4j,graphDB crud 미니 프로젝트](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EC%82%AC%EC%A0%84%ED%95%99%EC%8A%B5--%EC%97%BC%EC%9E%AC%EC%84%A0)
+- [nestJS](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/Nest-JS-%EA%B0%80%EC%9D%B4%EB%93%9C)
+- [nestJS,neo4j,graphDB crud 미니 프로젝트](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/nestJS,-neo4j,-graphDB-crud-%EB%AF%B8%EB%8B%88-%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8)
 - [cypher query](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/cypher-query-%EC%A0%95%EB%A6%AC)
-- [Neo4j 관계 설정](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/neo4j-multiple-relationships-%EB%AE%A4%EC%A7%80%EC%85%98---%EC%95%A8%EB%B2%94-%EC%A1%B0%ED%9A%8C)
+- [Neo4j 관계 설정](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/Neo4j-%EA%B4%80%EA%B3%84-%EC%84%A4%EC%A0%95)
 
 ## 협업 방식
 
