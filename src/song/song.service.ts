@@ -1,4 +1,4 @@
-import { Injectable, Logger } from "@nestjs/common";
+import { BadRequestException, Injectable, Logger } from "@nestjs/common";
 import { ConnectionException } from "../exception/cannot_connect_exception";
 import { DisconnectException } from "../exception/cannot_disconnect_exception";
 import { ConnectionFailException } from "../exception/connect_fail_exception";
@@ -13,11 +13,16 @@ import { ConnectionDto } from "./dto/connection.dto";
 import { RequestSongDto } from "./dto/req.song.dto";
 import { ResponseSongDto } from "./dto/res.song.dto";
 import { Song } from "./song.entitiy";
+import { SongQueryService } from "./song.query.service";
+import { SONG_TO_ALBUM } from "../relation/relation";
 
 @Injectable()
 export class SongService {
   private logger = new Logger("SongService");
-  constructor(private readonly neo4jService: Neo4jService) {}
+  constructor(
+    private readonly neo4jService: Neo4jService,
+    private readonly songQueryService: SongQueryService
+  ) {}
 
   // == read Song (for test) == //
   async readAllSongs(): Promise<ResponseSongDto[]> {
@@ -132,6 +137,20 @@ export class SongService {
       !(await this.isExistedNod(connectionDto.end))
     )
       throw new ConnectionFailException();
+
+    if (endLabel === "Album") {
+      const result = await this.neo4jService.read(
+        `MATCH
+                (song:Song {id: "${connectionDto.start}"})-[:${SONG_TO_ALBUM}]-(album)
+             RETURN album
+            `,
+        {}
+      );
+      console.log(result.records[0].get("album"));
+
+      if (result.records.length > 0)
+        throw new BadRequestException("한 곡은 앨범 1개만 들어갈 수 있습니다.");
+    }
 
     if (await this.isFollowing(connectionDto, endLabel, relationName)) {
       //관계가 있으면 (관계가 있는데 또 관계 추가하려하면)

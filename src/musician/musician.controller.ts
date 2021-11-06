@@ -12,6 +12,7 @@ import { MusicianService } from "./musician.service";
 import { CreateMusicianDto } from "./dto/create.musician.dto";
 import { UpdateMusicianDto } from "./dto/update.musician.dto";
 import { ConnectionDto } from "../song/dto/connection.dto";
+import { MUSICIAN_TO_SONG } from "../relation/relation";
 
 @Controller("musician")
 // @UseFilters(new HttpExceptionFil)
@@ -45,11 +46,19 @@ export class MusicianController {
 
   @Post("/connect/song")
   async connectToAlbum(@Body() connectionDto: ConnectionDto) {
-    return await this.musicianService.connect(connectionDto, "Song", "SING");
+    return await this.musicianService.connect(
+      connectionDto,
+      "Song",
+      MUSICIAN_TO_SONG
+    );
   }
 
   @Post("/disconnect/song")
   async disconnectToAlbum(@Body() connectionDto: ConnectionDto) {
-    return await this.musicianService.disconnect(connectionDto, "Song", "SING");
+    return await this.musicianService.disconnect(
+      connectionDto,
+      "Song",
+      MUSICIAN_TO_SONG
+    );
   }
 }
