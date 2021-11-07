@@ -133,12 +133,9 @@ npm run start
 [바로가기](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EB%AE%A4%EC%A7%80%EC%85%98---%EA%B3%A1,-%EA%B3%A1---%EC%95%A8%EB%B2%94-%EC%97%B0%EA%B2%B0---%EC%97%B0%EA%B2%B0%ED%95%B4%EC%A0%9C-API)
 
 
-**3. 곡 페이지**
-[바로가기]()
+**3. 곡, 뮤지션, 앨범 GraphQL Read API**
+[바로가기](https://github.com/Wanted-Free-Pre-Onboarding-Course-10/Assignment2/wiki/%EC%95%A8%EB%B2%94-%ED%8E%98%EC%9D%B4%EC%A7%80--&-%EB%AE%A4%EC%A7%80%EC%85%98%ED%8E%98%EC%9D%B4%EC%A7%80-&-%EB%85%B8%EB%9E%98%ED%8E%98%EC%9D%B4%EC%A7%80)
 
-   
-**4.뮤지션 페이지**
-[바로가기]()
 
 ## 회고록
 
